@@ -1,0 +1,57 @@
+##############################
+### Appearance preferences ###
+##############################
+
+title = " "
+macos-titlebar-proxy-icon = "hidden"
+
+theme = "Everblush"
+window-theme = "system"
+macos-titlebar-style = "transparent"
+macos-icon = "blueprint"
+
+cursor-style = "block"
+cursor-style-blink = "false"
+shell-integration-features = "no-cursor"
+
+font-family = "Monaco Fira Nerd"
+font-size = "15"
+
+# Disable ligatures
+# font-feature = "-liga"
+# font-feature = "-calt"
+# font-feature = "-dlig"
+
+# Terminal Initial Size
+window-width = 239
+window-height = 59
+
+############################
+### Behavior preferences ###
+############################
+
+macos-option-as-alt = "true"
+window-save-state = "always"
+quit-after-last-window-closed = "true"
+shell-integration = "zsh"
+
+###################
+### Keybindings ###
+###################
+
+keybind = "unconsumed:cmd+shift+r=reload_config"
+
+# Unbind 'Open new tab'
+keybind = "cmd+t=unbind"
+
+# Unbind 'Open new window'
+keybind = "cmd+n=unbind"
+
+# Unbind 'Toggle fullscreen'
+keybind = "cmd+enter=unbind"
+
+# Unbind 'Open new pane'
+keybind = "cmd+d=unbind"
+
+# Config for claude code
+keybind = shift+enter=text:\x1b\r

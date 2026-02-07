@@ -1,0 +1,48 @@
+[init]
+	defaultBranch = main
+
+[user]
+	email = diachkovspecial@gmail.com
+	name = diachkow
+
+[maintenance]
+	repo = /Users/vitaliy/Downloads/znap
+	repo = /Users/vitaliy/.oh-my-zsh
+	repo = /Users/vitaliy/znap
+	repo = /Users/vitaliy/.cookiecutters/cookiecutter
+	repo = /Users/vitaliy/.cookiecutters/cookiecutter-pypackage
+	repo = /Users/vitaliy/.cookiecutters/django-boilterplate
+	repo = /Users/vitaliy/.cookiecutters/google-cloud-function-template
+	repo = /Users/vitaliy/coding/teaching
+	repo = /Users/vitaliy/coding/work/sumup/ai_support_chat
+
+[core]
+	editor = nvim
+	compression = 9
+	whitespace = error
+	preloadindex = true
+
+[merge]
+	conflictStyle = zdiff3
+
+[push]
+	autoSetupRemote = true
+
+[git]
+	editor = nvim
+
+[advice]
+	addEmptyPathSpec = false
+	pushNonFastForward = false
+	statusHints = false
+
+[status]
+	branch = true
+	showStash = true
+	showUntrackedFiles = all
+
+[includeIf "gitdir:~/coding/work/sumup/"]
+    path = ~/.gitconfig-sumup
+
+[includeIf "gitdir:~/coding/work/lightit/"]
+    path = ~/.gitconfig-lightit
