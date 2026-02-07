@@ -2,3 +2,5 @@
 	email = vitaliy.diachkov.external@sumup.com
 	name = vitalii-diachkov-sumup
 
+[core]
+	sshCommand = ssh -i ~/.ssh/sumup -o IdentitiesOnly=yes

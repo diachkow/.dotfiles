@@ -1,3 +1,6 @@
 [user]
 	email = diachkov.v@light-it.net
 	name = vitaliy-diachkov
+
+[core]
+	sshCommand = ssh -i ~/.ssh/lightit -o IdentitiesOnly=yes
