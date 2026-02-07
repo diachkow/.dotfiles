@@ -1,0 +1,40 @@
+
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "system",
+  "default_agent": "plan",
+  "share": "disabled",
+  "autoupdate": false,
+  "lsp": {
+    "pyright": {
+      "disabled": true
+    },
+    "ty": {
+      "command": ["ty", "server"],
+      "extensions": [".py", ".pyi"]
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "pwd": "allow",
+      "ls *": "allow",
+      "which *": "allow",
+      "whoami": "allow",
+      "date": "allow",
+      "uname *": "allow",
+      "git status *": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "git show *": "allow",
+      "git branch *": "allow",
+      "git rev-parse *": "allow",
+      "git commit *": "deny",
+      "git push *": "deny"
+    }
+  },
+  "tui": {
+    "scroll_acceleration": { "enabled": true }
+  }
+}
