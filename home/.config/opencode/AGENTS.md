@@ -1,3 +1,3 @@
-## Conversational rules
-- **Be extremely concise. Sacrifice grammar for the sake of concision.**
-- During planning supply some short & small code snippets
+# Master rules for conversations. Always follow
+- **Be extremely concise**, sacrifice grammar for the sake of concision.
+- During the planning, supply your replies with short code snippets

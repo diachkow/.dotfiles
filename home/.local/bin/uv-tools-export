@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+manifest="${1:-${DOTFILES_DIR:-$HOME/.dotfiles}/uv-tools.txt}"
+tmp_file="${manifest}.tmp"
+
+mkdir -p "$(dirname "$manifest")"
+
+uv tool list --show-version-specifiers \
+  | uv run python3 -c 'import re,sys
+pattern = re.compile(r"^(\S+)\s+v([^\s]+)")
+specs = set()
+for raw in sys.stdin:
+    match = pattern.match(raw.strip())
+    if match:
+        specs.add(f"{match.group(1)}~={match.group(2)}")
+for spec in sorted(specs):
+    print(spec)
+' >"$tmp_file"
+
+mv "$tmp_file" "$manifest"
+printf "Exported uv tools to %s\n" "$manifest"

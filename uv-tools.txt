@@ -1,0 +1,5 @@
+cookiecutter~=2.6.0
+dunk~=0.5.0b0
+posting~=2.9.2
+ty~=0.0.14
+yamllint~=1.38.0
