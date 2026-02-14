@@ -18,4 +18,7 @@ return {
 
   -- Notification pop-ups
   { "j-hui/fidget.nvim" },
+
+  -- Justfile syntax/indent/filetype support
+  { "NoahTheDuke/vim-just", ft = { "just" } },
 }

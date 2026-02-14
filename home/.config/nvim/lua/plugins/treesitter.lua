@@ -12,6 +12,7 @@ return {
           "vim",
           "vimdoc",
           "dockerfile",
+          "just",
           -- Python and related
           "python",
           "toml",
