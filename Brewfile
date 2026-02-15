@@ -27,6 +27,8 @@ brew "docker-compose"
 brew "go"
 brew "k6"
 brew "kubectx"
+brew "just"
+brew "sqlcipher"
 
 # CLI utilities used in shell/editor workflows
 brew "bat"
