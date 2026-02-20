@@ -1,3 +1,21 @@
+local snacks_picker_exclude = {
+  "**/.git/**",
+  "**/.jj/**",
+  "**/.hg/**",
+  "**/.svn/**",
+  "**/.venv/**",
+  "**/venv/**",
+  "**/.tox/**",
+  "**/node_modules/**",
+  "**/.direnv/**",
+  "**/.mypy_cache/**",
+  "**/.pytest_cache/**",
+  "**/.ruff_cache/**",
+  "**/__pycache__/**",
+  "**/.idea/**",
+  "**/.vscode/**",
+}
+
 return {
   {
     "folke/snacks.nvim",
@@ -14,9 +32,13 @@ return {
         sources = {
           files = {
             follow = true,
+            hidden = true,
+            exclude = snacks_picker_exclude,
           },
           grep = {
             follow = true,
+            hidden = true,
+            exclude = snacks_picker_exclude,
           },
         },
         layout = {
