@@ -32,6 +32,18 @@ return {
       },
     })
 
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("snacks-oil-rename", { clear = true }),
+      pattern = "OilActionsPost",
+      callback = function(event)
+        for _, action in ipairs(event.data.actions or {}) do
+          if action.type == "move" then
+            Snacks.rename.on_rename_file(action.src_url, action.dest_url)
+          end
+        end
+      end,
+    })
+
     vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
     vim.keymap.set("n", "_", "<CMD>Oil .<CR>", { desc = "Open project root directory" })
   end,

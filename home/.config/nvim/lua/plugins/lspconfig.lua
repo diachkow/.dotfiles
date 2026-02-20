@@ -16,16 +16,15 @@ return {
             vim.keymap.set("n", keymap, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
 
-          local tsbuiltin = require("telescope.builtin")
-          keybind("gd", tsbuiltin.lsp_definitions, "Goto Definition")
+          keybind("gd", Snacks.picker.lsp_definitions, "Goto Definition")
           keybind("gD", vim.lsp.buf.declaration, "Goto Declaration")
-          keybind("grr", tsbuiltin.lsp_references, "Goto References")
-          keybind("gri", tsbuiltin.lsp_implementations, "Goto Implementations")
+          keybind("grr", Snacks.picker.lsp_references, "Goto References")
+          keybind("gri", Snacks.picker.lsp_implementations, "Goto Implementations")
           keybind("grn", vim.lsp.buf.rename, "Rename Variable")
           keybind("gra", vim.lsp.buf.code_action, "Execute Code Action")
-          keybind("gO", tsbuiltin.lsp_document_symbols, "Document Symbols")
-          keybind("<leader>d", tsbuiltin.lsp_document_symbols, "Dynamic Workspace Symbols")
-          keybind("<leader>D", tsbuiltin.lsp_type_definitions, "Type Definitions")
+          keybind("gO", Snacks.picker.lsp_symbols, "Document Symbols")
+          keybind("<leader>d", Snacks.picker.lsp_symbols, "Dynamic Workspace Symbols")
+          keybind("<leader>D", Snacks.picker.lsp_type_definitions, "Type Definitions")
           keybind("K", vim.lsp.buf.hover, "Hover Element Under Cursor")
         end,
       })
@@ -119,6 +118,9 @@ return {
       vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
+            diagnostics = {
+              globals = { "Snacks" },
+            },
             runtime = { version = "LuaJIT" },
             workspace = {
               checkThirdParty = false,
