@@ -1,13 +1,6 @@
-const TERMINAL_APPS = new Set([
-  "Terminal",
-  "iTerm2",
-  "Ghostty",
-  "Alacritty",
-  "kitty",
-  "WezTerm",
-  "Warp",
-  "Hyper",
-])
+function isGhosttyApp(appName) {
+  return /ghostty/i.test(appName)
+}
 
 async function shouldNotify($) {
   try {
@@ -15,7 +8,7 @@ async function shouldNotify($) {
       await $`osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true'`.text()
     ).trim()
     if (!frontmost) return true
-    return !TERMINAL_APPS.has(frontmost)
+    return !isGhosttyApp(frontmost)
   } catch {
     return true
   }
