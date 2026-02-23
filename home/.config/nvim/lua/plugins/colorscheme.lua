@@ -31,6 +31,19 @@ return {
           MiniStatuslineFilename = { fg = "#8ccf7e", bg = "#141b1e" },
           MiniStatuslineFileinfo = { fg = "#dadada", bg = "#232a2d" },
           MiniStatuslineInactive = { fg = "#dadada", bg = "#141b1e" },
+
+          -- -- nvim-treesitter main uses newer capture names.
+          -- ["@keyword.import"] = { link = "@include" },
+          -- ["@keyword.conditional"] = { link = "@conditional" },
+          -- ["@keyword.repeat"] = { link = "@repeat" },
+          -- ["@keyword.exception"] = { link = "@exception" },
+          -- ["@module"] = { link = "@namespace" },
+          -- ["@module.builtin"] = { link = "@namespace" },
+          -- ["@function.call"] = { link = "@function" },
+          -- ["@function.method"] = { link = "@method" },
+          -- ["@variable.parameter"] = { link = "@parameter" },
+          -- ["@variable.parameter.builtin"] = { link = "@parameter" },
+          -- ["@variable.member"] = { link = "@property" },
         },
       })
       vim.cmd.colorscheme("everblush")

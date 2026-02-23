@@ -2,40 +2,24 @@ return {
   -- Highlight, edit, and navigate code
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "bash",
-          "lua",
-          "markdown",
-          "vim",
-          "vimdoc",
-          "dockerfile",
-          "just",
-          -- Python and related
-          "python",
-          "toml",
-          "rst",
-          "ninja",
-          -- js and related
-          "javascript",
-          "typescript",
-          -- go
-          "go",
-          "gosum",
-          "gomod",
-          -- misc
-          "html",
-        },
-        -- Autoinstall languages that are not installed
-        auto_install = true,
-        highlight = { enable = true },
+      local ts = require("nvim-treesitter")
+      local ts_runtime = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/runtime"
 
-        -- Disabled as treesitter auto-indentation works weird
-        -- in Python
-        indent = { enable = false },
+      if vim.fn.isdirectory(ts_runtime) == 1 then
+        vim.opt.rtp:prepend(ts_runtime)
+      end
+
+      ts.setup({})
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },
