@@ -1,20 +1,4 @@
 return {
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  --   priority = 1000,
-  --   config = function(opts)
-  --     require("catppuccin").setup({
-  --       flavor = "macchiato",
-  --       background = {
-  --         light = "latte",
-  --         dark = "macchiato",
-  --       },
-  --       no_italic = true,
-  --     })
-  --     -- vim.cmd.colorscheme("catppuccin")
-  --   end,
-  -- },
   {
     "Everblush/nvim",
     name = "everblush",
@@ -31,67 +15,9 @@ return {
           MiniStatuslineFilename = { fg = "#8ccf7e", bg = "#141b1e" },
           MiniStatuslineFileinfo = { fg = "#dadada", bg = "#232a2d" },
           MiniStatuslineInactive = { fg = "#dadada", bg = "#141b1e" },
-
-          -- -- nvim-treesitter main uses newer capture names.
-          -- ["@keyword.import"] = { link = "@include" },
-          -- ["@keyword.conditional"] = { link = "@conditional" },
-          -- ["@keyword.repeat"] = { link = "@repeat" },
-          -- ["@keyword.exception"] = { link = "@exception" },
-          -- ["@module"] = { link = "@namespace" },
-          -- ["@module.builtin"] = { link = "@namespace" },
-          -- ["@function.call"] = { link = "@function" },
-          -- ["@function.method"] = { link = "@method" },
-          -- ["@variable.parameter"] = { link = "@parameter" },
-          -- ["@variable.parameter.builtin"] = { link = "@parameter" },
-          -- ["@variable.member"] = { link = "@property" },
         },
       })
       vim.cmd.colorscheme("everblush")
     end,
   },
-  -- {
-  --   "folke/tokyonight.nvim",
-  --   priority = 1001,
-  --   config = function()
-  --     require("tokyonight").setup({
-  --       -- Disable italic style
-  --       styles = {
-  --         comments = { italic = false },
-  --         keywords = { italic = false },
-  --       },
-  --       -- Borderless telescope config
-  --       on_highlights = function(hl, c)
-  --         local prompt = "#2d3149"
-  --         hl.TelescopeNormal = {
-  --           bg = c.bg_dark,
-  --           fg = c.fg_dark,
-  --         }
-  --         hl.TelescopeBorder = {
-  --           bg = c.bg_dark,
-  --           fg = c.bg_dark,
-  --         }
-  --         hl.TelescopePromptNormal = {
-  --           bg = prompt,
-  --         }
-  --         hl.TelescopePromptBorder = {
-  --           bg = prompt,
-  --           fg = prompt,
-  --         }
-  --         hl.TelescopePromptTitle = {
-  --           bg = prompt,
-  --           fg = prompt,
-  --         }
-  --         hl.TelescopePreviewTitle = {
-  --           bg = c.bg_dark,
-  --           fg = c.bg_dark,
-  --         }
-  --         hl.TelescopeResultsTitle = {
-  --           bg = c.bg_dark,
-  --           fg = c.bg_dark,
-  --         }
-  --       end,
-  --     })
-  --     vim.cmd.colorscheme("tokyonight-storm")
-  --   end,
-  -- },
 }
