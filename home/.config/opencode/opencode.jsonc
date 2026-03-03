@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "system",
   "default_agent": "plan",
   "share": "disabled",
   "autoupdate": false,
@@ -40,8 +39,5 @@
       "git commit *": "deny",
       "git push *": "deny"
     }
-  },
-  "tui": {
-    "scroll_acceleration": { "enabled": true }
   }
 }
