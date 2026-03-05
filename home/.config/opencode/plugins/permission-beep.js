@@ -17,7 +17,8 @@ async function shouldNotify($) {
 export const PermissionBeepPlugin = async ({ $ }) => {
   return {
     event: async ({ event }) => {
-      if (event.type !== "permission.asked") return
+      const shouldBeep = event.type === "permission.asked" || event.type === "session.idle"
+      if (!shouldBeep) return
       if (!(await shouldNotify($))) return
 
       try {
