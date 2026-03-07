@@ -40,6 +40,8 @@ HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file ./Brewfile --no-upgrade || \
 
 Commands in `home/.local/bin/` are Stow-managed and symlinked to `~/.local/bin`.
 
+- `vibecode` - starts `opencode` with `~/.config/opencode/vibecode.jsonc` overrides
+
 - `uv-tools-install [manifest]` - install tools listed in `uv-tools.txt`
 - `uv-tools-export [manifest]` - export installed tools to `uv-tools.txt` using `~=` version specifiers
 - `uvx-upgrade [manifest]` - run `uv tool upgrade --all` then refresh `uv-tools.txt`
