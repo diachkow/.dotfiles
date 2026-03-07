@@ -5,7 +5,7 @@
 title = " "
 macos-titlebar-proxy-icon = "hidden"
 
-theme = "Everblush"
+theme = "gruvbox-material-mix-medium-dark"
 window-theme = "system"
 macos-titlebar-style = "transparent"
 macos-icon = "blueprint"

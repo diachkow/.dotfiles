@@ -15,21 +15,41 @@ $rust\
 $line_break\
 $character"""
 
-palette = "everblush"
+palette = "gruvbox_material_mix_medium"
 command_timeout = 1000
 
 # Starship modules
 [character]
 success_symbol = "[\\$](bold green)"
-error_symbol = "[X](bold peach)"
+error_symbol = "[X](bold red)"
 
-# [git_branch]
-# style = "bold mauve"
+[git_branch]
+style = "bold magenta"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold yellow"
+
+[git_state]
+style = "bold red"
 
 [directory]
 truncation_length = 4
 style = "bold blue"
 format = "[ $path]($style)[$read_only]($read_only_style) "
+read_only_style = "bold red"
+
+[python]
+style = "bold yellow"
+
+[golang]
+style = "bold cyan"
+
+[nodejs]
+style = "bold green"
+
+[rust]
+style = "bold red"
 
 # Palette definitions
 [palettes.catppuccin_latte]
@@ -89,6 +109,34 @@ surface0 = "#232a2d"
 base = "#141b1e"
 mantle = "#101618"
 crust = "#0c1214"
+
+[palettes.gruvbox_material_mix_medium]
+background = "#282828"
+lighter_background = "#32302f"
+red = "#f2594b"
+green = "#b0b846"
+yellow = "#e9b143"
+blue = "#80aa9e"
+magenta = "#d3869b"
+cyan = "#8bba7f"
+light_gray = "#a89984"
+foreground = "#e2cca9"
+
+text = "#e2cca9"
+subtext1 = "#ddc7a1"
+subtext0 = "#a89984"
+
+overlay2 = "#928374"
+overlay1 = "#7c6f64"
+overlay0 = "#5a524c"
+
+surface2 = "#5a524c"
+surface1 = "#45403d"
+surface0 = "#32302f"
+
+base = "#282828"
+mantle = "#1b1b1b"
+crust = "#141617"
 
 [palettes.catppuccin_frappe]
 rosewater = "#f2d5cf"
