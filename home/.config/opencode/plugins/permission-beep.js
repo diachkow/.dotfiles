@@ -14,10 +14,31 @@ async function shouldNotify($) {
   }
 }
 
-export const PermissionBeepPlugin = async ({ $ }) => {
+async function isMainSession(client, sessionID, directory) {
+  try {
+    const result = await client.session.get({
+      path: { id: sessionID },
+      query: { directory },
+    })
+    const session = result.data ?? result
+
+    return !session.parentID
+  } catch {
+    return true
+  }
+}
+
+async function shouldBeepForEvent(event, client, directory) {
+  if (event.type === "permission.asked") return true
+  if (event.type !== "session.idle") return false
+
+  return isMainSession(client, event.properties.sessionID, directory)
+}
+
+export const PermissionBeepPlugin = async ({ $, client, directory }) => {
   return {
     event: async ({ event }) => {
-      const shouldBeep = event.type === "permission.asked" || event.type === "session.idle"
+      const shouldBeep = await shouldBeepForEvent(event, client, directory)
       if (!shouldBeep) return
       if (!(await shouldNotify($))) return
 
