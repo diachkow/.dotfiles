@@ -171,6 +171,7 @@ eval_if_cmd zoxide init --cmd cd zsh
 
 # Set up `eza` instead of `ls`
 alias ls='eza'
+export EZA_CONFIG_DIR="$HOME/.config/eza"
 
 # Set up `bat` instead of `cat`
 alias cat='bat'
