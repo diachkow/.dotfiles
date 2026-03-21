@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="$HOME/coding"
+FD_EXCLUDES=(
+    --exclude node_modules
+    --exclude .venv
+    --exclude venv
+    --exclude .cache
+    --exclude vendor
+    --exclude .npm
+    --exclude .cargo
+    --exclude .rustup
+    --exclude go/pkg
+)
+
+get_project_list() {
+    {
+        fd --type d --hidden --no-ignore "^\.git$" "$PROJECT_ROOT" --max-depth 5 \
+            "${FD_EXCLUDES[@]}" 2>/dev/null | xargs -I{} dirname {}
+        fd --type f --no-ignore "^package\.json$" "$PROJECT_ROOT" --max-depth 5 \
+            "${FD_EXCLUDES[@]}" 2>/dev/null | xargs -I{} dirname {}
+        fd --type f --no-ignore "^pyproject\.toml$" "$PROJECT_ROOT" --max-depth 5 \
+            "${FD_EXCLUDES[@]}" 2>/dev/null | xargs -I{} dirname {}
+        fd --type f --no-ignore "^go\.sum$" "$PROJECT_ROOT" --max-depth 5 \
+            "${FD_EXCLUDES[@]}" 2>/dev/null | xargs -I{} dirname {}
+    } | sort -u
+}
+
+if [[ $# -gt 0 ]]; then
+    project_dir="$1"
+    if [[ ! "$project_dir" = /* ]]; then
+        project_dir="$(cd "$project_dir" 2>/dev/null && pwd)" || {
+            echo "Not a valid directory: $1" >&2
+            exit 1
+        }
+    fi
+else
+    if [[ ! -d "$PROJECT_ROOT" ]]; then
+        echo "Project root not found: $PROJECT_ROOT" >&2
+        exit 1
+    fi
+
+    project_dir=$(get_project_list | fzf --prompt="project > " --preview "ls {}")
+    [[ -z "$project_dir" ]] && exit 0
+fi
+
+if [[ ! -d "$project_dir" ]]; then
+    echo "Directory not found: $project_dir" >&2
+    exit 1
+fi
+
+osascript - "$project_dir" <<'APPLESCRIPT'
+on run argv
+    set projectDir to item 1 of argv
+
+    tell application "Ghostty"
+        activate
+
+        set oldWindows to every window
+
+        set cfg to new surface configuration
+        set initial working directory of cfg to projectDir
+
+        set win to new window with configuration cfg
+        set newTab2 to new tab in win with configuration cfg
+        set newTab3 to new tab in win with configuration cfg
+
+        set term1 to focused terminal of tab 1 of win
+        set term2 to focused terminal of tab 2 of win
+        set term3 to focused terminal of tab 3 of win
+
+        perform action "set_tab_title:nvim" on term1
+        perform action "set_tab_title:test" on term2
+        perform action "set_tab_title:root" on term3
+
+        select tab (tab 1 of win)
+
+        repeat with oldWin in oldWindows
+            close window oldWin
+        end repeat
+    end tell
+end run
+APPLESCRIPT
