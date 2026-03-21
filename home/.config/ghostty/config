@@ -14,8 +14,8 @@ cursor-style = "block"
 cursor-style-blink = "false"
 shell-integration-features = "no-cursor"
 
-font-family = "Geist Mono"
-font-size = "15"
+font-family = "JetBrains Mono"
+font-size = "16"
 
 # Disable ligatures
 # font-feature = "-liga"
