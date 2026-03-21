@@ -70,9 +70,9 @@ on run argv
         set term2 to focused terminal of tab 2 of win
         set term3 to focused terminal of tab 3 of win
 
-        perform action "set_tab_title:nvim" on term1
-        perform action "set_tab_title:test" on term2
-        perform action "set_tab_title:root" on term3
+        perform action "set_tab_title:💻 nvim" on term1
+        perform action "set_tab_title:🔍 test" on term2
+        perform action "set_tab_title:💼 root" on term3
 
         select tab (tab 1 of win)
 
