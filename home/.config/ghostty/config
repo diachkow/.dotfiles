@@ -54,13 +54,13 @@ keybind = "cmd+enter=unbind"
 keybind = "cmd+d=unbind"
 
 # Tab switching with Option+number
-keybind = alt+1=goto_tab:1
-keybind = alt+2=goto_tab:2
-keybind = alt+3=goto_tab:3
+keybind = ctrl+b>1=goto_tab:1
+keybind = ctrl+b>2=goto_tab:2
+keybind = ctrl+b>3=goto_tab:3
 
 # Splits
-keybind = alt+minus=new_split:down
-keybind = alt+shift+backslash=new_split:right
+keybind = ctrl+b>minus=new_split:down
+keybind = ctrl+b>shift+backslash=new_split:right
 
 # Config for claude code
 keybind = shift+enter=text:\x1b\r
