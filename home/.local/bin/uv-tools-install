@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-manifest="${1:-${DOTFILES_DIR:-$HOME/.dotfiles}/uv-tools.txt}"
+manifest="${1:-${DOTFILES_DIR:-$HOME/coding/.dotfiles}/uv-tools.txt}"
 
 if [[ ! -f "$manifest" ]]; then
   printf "uv tools manifest not found: %s\n" "$manifest" >&2
