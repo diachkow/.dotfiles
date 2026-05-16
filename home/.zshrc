@@ -166,6 +166,9 @@ eval_if_cmd ngrok completion
 # Set up fzf key bindings and fuzzy completion
 eval_if_cmd fzf --zsh
 
+# Initialize fnm with automatic version switching on directory changes
+eval_if_cmd fnm env --use-on-cd --shell zsh
+
 # Install zoxide (the 'z' command) instead of 'cd'
 eval_if_cmd zoxide init --cmd cd zsh
 
@@ -207,3 +210,11 @@ export FZF_DEFAULT_OPTS='
 
 # Create session work if not exists
 alias t='tmux new-session -A -s work'
+
+# pnpm
+export PNPM_HOME="/Users/vitaliy/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
