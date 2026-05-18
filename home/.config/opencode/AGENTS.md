@@ -15,3 +15,8 @@ deps = self._build_deps(args)
 # ===== Helper functions =====
 ```
 - Do not remove already existing comments
+
+# Source control rules
+- Do not create commits, branches and manage remote state unless prompted otherwise.
+- When prompted to, use `GIT_EDITOR=true` to bypass neovim editor when creating commits/rebasing etc
+- Whenever you are told to explore remote repos or manage anything remove, use `gh` CLI for that.
