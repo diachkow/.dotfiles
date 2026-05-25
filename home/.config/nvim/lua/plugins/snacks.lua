@@ -79,32 +79,11 @@ return {
         desc = "[S]earch [K]eymaps",
       },
       {
-        "<leader>sf",
-        function()
-          Snacks.picker.files()
-        end,
-        desc = "[S]earch [F]iles",
-      },
-      {
         "<leader>ss",
         function()
           Snacks.picker()
         end,
         desc = "[S]earch [S]elect Telescope",
-      },
-      {
-        "<leader>sw",
-        function()
-          Snacks.picker.grep_word()
-        end,
-        desc = "[S]earch current [W]ord",
-      },
-      {
-        "<leader>sg",
-        function()
-          Snacks.picker.grep()
-        end,
-        desc = "[S]earch by [G]rep",
       },
       {
         "<leader>sd",
@@ -145,13 +124,6 @@ return {
           })
         end,
         desc = "[/] Fuzzily search in current buffer",
-      },
-      {
-        "<leader>sn",
-        function()
-          Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
-        end,
-        desc = "[S]earch [N]eovim files",
       },
     },
   },
