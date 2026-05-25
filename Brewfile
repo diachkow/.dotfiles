@@ -47,4 +47,5 @@ brew "zsh-syntax-highlighting"
 # GUI apps
 cask "ghostty"
 cask "legcord"
-cast "font-geist-mono"
+cask "font-geist-mono"
+cask "font-maple-mono-nf"
