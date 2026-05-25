@@ -197,14 +197,14 @@ export DOCKER_HOST="unix://${HOME}/.colima/docker.sock"
 # Set default editor
 export EDITOR="nvim"
 
-# Gruvbox Material color scheme
+# Catppuccin Mocha color scheme
 export FZF_DEFAULT_OPTS='
-  --color fg:#e2cca9,bg:#282828
-  --color bg+:#3c3836,fg+:#e2cca9
-  --color hl:#e9b143,hl+:#b0b846
-  --color pointer:#f2594b,info:#80aa9e
-  --color prompt:#d3869b,spinner:#8bba7f,marker:#b0b846,header:#80aa9e
-  --color gutter:#282828,border:#5a524c
+  --color fg:#cdd6f4,bg:#1e1e2e
+  --color bg+:#313244,fg+:#cdd6f4
+  --color hl:#f38ba8,hl+:#a6e3a1
+  --color pointer:#f5e0dc,info:#cba6f7
+  --color prompt:#89b4fa,spinner:#f5e0dc,marker:#a6e3a1,header:#89dceb
+  --color gutter:#1e1e2e,border:#585b70
   --border
   --height 13'
 

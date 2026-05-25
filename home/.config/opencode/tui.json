@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/tui.json",
-  "theme": "gruvbox-mix-medium",
+  "theme": "catppuccin-mocha-local",
   "scroll_acceleration": {
     "enabled": true
   }

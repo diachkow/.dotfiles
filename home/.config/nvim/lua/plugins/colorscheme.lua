@@ -1,12 +1,13 @@
 return {
   {
-    "sainnhe/gruvbox-material",
-    name = "gruvbox-material",
+    "catppuccin/nvim",
+    name = "catppuccin",
     config = function()
-      vim.g.gruvbox_material_background = "medium"
-      vim.g.gruvbox_material_foreground = "mix"
+      require("catppuccin").setup({
+        flavour = "mocha",
+      })
       vim.o.background = "dark"
-      vim.cmd.colorscheme("gruvbox-material")
+      vim.cmd.colorscheme("catppuccin")
     end,
   },
 }

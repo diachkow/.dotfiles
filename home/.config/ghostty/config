@@ -5,7 +5,7 @@
 title = " "
 macos-titlebar-proxy-icon = "hidden"
 
-theme = "gruvbox-material-mix-medium-dark"
+theme = "Catppuccin Mocha"
 window-theme = "ghostty"
 macos-titlebar-style = "tabs"
 macos-icon = "blueprint"
