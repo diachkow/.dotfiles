@@ -15,7 +15,7 @@ return {
     },
     config = function()
       local conform = require("conform")
-      local js_formatters = { "prettierd", "prettier", stop_after_first = true }
+      local js_formatters = { "oxfmt", "oxlint" }
 
       -- Command to enable/disable format on save
       vim.api.nvim_create_user_command("FormatDisable", function(args)
@@ -44,6 +44,13 @@ return {
           typescript = js_formatters,
           javascriptreact = js_formatters,
           typescriptreact = js_formatters,
+          html = { "oxfmt" },
+          css = { "oxfmt" },
+          scss = { "oxfmt" },
+          less = { "oxfmt" },
+          vue = js_formatters,
+          graphql = { "oxfmt" },
+          handlebars = { "oxfmt" },
           python = function(bufnr)
             local fallback_formatters = {}
             local append_default_formatter = function(formatter_name)

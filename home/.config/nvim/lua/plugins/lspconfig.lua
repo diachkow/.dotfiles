@@ -82,7 +82,8 @@ return {
         "taplo",
         "stylua",
         "isort",
-        "prettierd",
+        "oxlint",
+        "oxfmt",
       }
 
       require("mason-tool-installer").setup({
@@ -147,6 +148,8 @@ return {
         },
       })
       vim.lsp.enable("ts_ls")
+
+      vim.lsp.enable("oxlint")
 
       -- Typos LSP setup
       vim.lsp.config("typos_lsp", {
