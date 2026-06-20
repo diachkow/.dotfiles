@@ -4,6 +4,7 @@
   "share": "disabled",
   "autoupdate": false,
   "lsp": false,
+  "enabled_providers": ["opencode", "opencode-go"],
   "permission": {
     "edit": "allow",
     "bash": {

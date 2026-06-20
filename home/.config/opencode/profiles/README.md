@@ -68,7 +68,7 @@ just show an empty description column.
 
 1. Create `home/.config/opencode/profiles/<name>/`.
 2. Optionally add `opencode.jsonc` with overrides (e.g. `default_agent`,
-   `permission`, `agent.<builtin>.disable`).
+   `permission`, `agent.<builtin>.disable`, `enabled_providers`).
 3. Optionally add `.description` (one line).
 4. Optionally add `agents/`, `skills/`, `plugins/` subdirs for profile-specific
    resources.
@@ -84,3 +84,9 @@ just show an empty description column.
 - Because profiles layer on top of global, a profile can override a global
   agent by defining the same key in its `opencode.jsonc` `agent:` block, or
   disable a built-in via `agent: { build: { disable: true } }`.
+- `enabled_providers` (allowlist) and `disabled_providers` (blocklist) are
+  supported overrides. On merge, a profile's value **replaces** the global
+  value rather than unioning with it — so a profile listing `enabled_providers`
+  exposes only those providers for that launch. The global config sets
+  `enabled_providers: ["opencode", "opencode-go"]` (Zen + Go) as the personal
+  default; the `work` profile overrides it with `["openai", "github-copilot"]`.
