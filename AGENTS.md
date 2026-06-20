@@ -6,7 +6,8 @@
 
 ## Key Paths
 - `home/.config/**` app configs (nvim, tmux, opencode, ghostty, starship).
-- `home/.local/bin/*` helper scripts (`uv-tools-install`, `uv-tools-export`, `uvx-upgrade`).
+- `home/.local/bin/*` helper scripts (`uv-tools-install`, `uv-tools-export`, `uvx-upgrade`, `oc`).
+- `home/.config/opencode/profiles/` opencode profiles (layered via `OPENCODE_CONFIG_DIR`); see `home/.config/opencode/profiles/README.md`.
 - `Brewfile` curated Homebrew bundle manifest (minimal/intended deps only).
 - `scripts/stow.sh`, `scripts/restow.sh`, `scripts/unstow.sh` for symlink lifecycle.
 - `scripts/install-external-tools.sh` installs `uv`, `opencode`, `bun`, `oh-my-zsh` via curl installers when missing.
@@ -27,6 +28,10 @@
 - `HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file ./Brewfile --no-upgrade`
 - `HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --file ./Brewfile --no-upgrade`
 - If changing `home/.config/opencode/package.json`, run `bun install` in `home/.config/opencode`.
+- `oc -p <profile> [opencode args...]` launches opencode with a profile (run `oc` with no args to list profiles).
+
+## Opencode Profiles
+- If asked about the opencode profiles setup, read `home/.config/opencode/profiles/README.md` and inspect `home/.config/opencode/profiles/`. Profiles layer on top of the global `~/.config/opencode/` config via `OPENCODE_CONFIG_DIR`; the `oc` wrapper at `home/.local/bin/oc` selects them.
 
 ## Brewfile Policy
 - Keep `Brewfile` curated/minimal; avoid machine-wide dumps without review.

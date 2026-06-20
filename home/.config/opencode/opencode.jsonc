@@ -3,41 +3,21 @@
   "default_agent": "plan",
   "share": "disabled",
   "autoupdate": false,
-  "lsp": {
-    "pyright": {
-      "disabled": true
-    },
-    "ty": {
-      "command": ["ty", "server"],
-      "extensions": [".py", ".pyi"]
-    }
-  },
+  "lsp": false,
   "permission": {
-    "edit": "ask",
+    "edit": "allow",
     "bash": {
-      "*": "ask",
-      "pwd": "allow",
-      "ls *": "allow",
-      "which *": "allow",
-      "whoami": "allow",
-      "date": "allow",
-      "uname *": "allow",
-      "just check": "allow",
-      "just typecheck": "allow",
-      "just lint": "allow",
-      "make check": "allow",
-      "make typecheck": "allow",
-      "make lint": "allow",
-      "uv run ruff *": "allow",
-      "uv run pytest *": "allow",
-      "git status *": "allow",
-      "git diff *": "allow",
-      "git log *": "allow",
-      "git show *": "allow",
-      "git branch *": "allow",
-      "git rev-parse *": "allow",
-      "git commit *": "deny",
-      "git push *": "deny"
+      "*": "allow",
+      "git commit *": "ask",
+      "git push *": "ask",
+      "docker compose config": "deny"
+    },
+    "external_directory": {
+      "~/coding/**": "allow",
+      "/var/folders/**": "allow",
+      "/tmp/**": "allow",
+      "~/.config/**": "allow",
+      "~/.local/share/**": "allow"
     }
   }
 }

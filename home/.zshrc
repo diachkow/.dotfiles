@@ -132,7 +132,6 @@ export MYVIMRC=$HOME/.config/nvim/init.lua
 
 # Add alias to quickly edit ghostty config file
 alias gc="nvim $HOME/.config/ghostty/config"
-alias vibecode='OPENCODE_CONFIG="$HOME/.config/opencode/vibecode.jsonc" opencode'
 
 # Add shortcut for faster venv activation for Python
 # 'ave' stands for 'activate virtual environment'

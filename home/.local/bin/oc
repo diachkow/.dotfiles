@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+profiles_dir="$HOME/.config/opencode/profiles"
+
+usage() {
+  printf "Usage: oc -p <profile> [opencode args...]\n\n" >&2
+
+  local names=() descs=() max_len=0
+  if [[ -d "$profiles_dir" ]]; then
+    local dir name desc
+    for dir in "$profiles_dir"/*/; do
+      [[ -d "$dir" ]] || continue
+      name="${dir%/}"
+      name="${name##*/}"
+      desc=""
+      if [[ -f "$dir.description" ]]; then
+        read -r desc < "$dir.description" || true
+      fi
+      names+=("$name")
+      descs+=("$desc")
+      (( ${#name} > max_len )) && max_len=${#name}
+    done
+  fi
+
+  if (( ${#names[@]} > 0 )); then
+    printf "Available profiles:\n" >&2
+    local i
+    for i in "${!names[@]}"; do
+      printf "  %-*s  %s\n" "$max_len" "${names[$i]}" "${descs[$i]}" >&2
+    done
+  fi
+
+  exit 2
+}
+
+[[ "${1:-}" == "-p" ]] || usage
+[[ $# -ge 2 ]] || usage
+profile="$2"
+shift 2
+
+dir="$profiles_dir/$profile"
+if [[ ! -d "$dir" ]]; then
+  printf "oc: profile '%s' not found at %s\n" "$profile" "$dir" >&2
+  printf "Run 'oc' with no args to list available profiles.\n" >&2
+  exit 1
+fi
+
+export OPENCODE_CONFIG_DIR="$dir"
+exec opencode "$@"
