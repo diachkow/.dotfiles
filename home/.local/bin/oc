@@ -1,50 +1,143 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.14,<3.15"
+# dependencies = ["typer==0.26.7", "pyyaml==6.0.3"]
+# ///
 
-profiles_dir="$HOME/.config/opencode/profiles"
+import os
+from pathlib import Path
+from typing import Any, NoReturn
 
-usage() {
-  printf "Usage: oc -p <profile> [opencode args...]\n\n" >&2
+import typer
+import yaml
 
-  local names=() descs=() max_len=0
-  if [[ -d "$profiles_dir" ]]; then
-    local dir name desc
-    for dir in "$profiles_dir"/*/; do
-      [[ -d "$dir" ]] || continue
-      name="${dir%/}"
-      name="${name##*/}"
-      desc=""
-      if [[ -f "$dir.description" ]]; then
-        read -r desc < "$dir.description" || true
-      fi
-      names+=("$name")
-      descs+=("$desc")
-      (( ${#name} > max_len )) && max_len=${#name}
-    done
-  fi
+PROFILES_DIR = Path.home() / ".config" / "opencode" / "profiles"
 
-  if (( ${#names[@]} > 0 )); then
-    printf "Available profiles:\n" >&2
-    local i
-    for i in "${!names[@]}"; do
-      printf "  %-*s  %s\n" "$max_len" "${names[$i]}" "${descs[$i]}" >&2
-    done
-  fi
+app = typer.Typer(
+    context_settings={
+        "allow_extra_args": True,
+        "ignore_unknown_options": True,
+        "help_option_names": [],
+    },
+    add_completion=False,
+)
 
-  exit 2
-}
 
-[[ "${1:-}" == "-p" ]] || usage
-[[ $# -ge 2 ]] || usage
-profile="$2"
-shift 2
+@app.command()
+def main(
+    ctx: typer.Context,
+    profile: str = typer.Option(None, "-p", "--profile", help="Profile name to launch"),
+) -> None:
+    """Launch opencode with a layered profile config."""
+    if profile is None:
+        _show_usage_and_profiles()
+        raise typer.Exit(2)
 
-dir="$profiles_dir/$profile"
-if [[ ! -d "$dir" ]]; then
-  printf "oc: profile '%s' not found at %s\n" "$profile" "$dir" >&2
-  printf "Run 'oc' with no args to list available profiles.\n" >&2
-  exit 1
-fi
+    data = _load_profile(profile)
+    env = _build_env(data, profile)
+    _exec_opencode(ctx.args, env)
 
-export OPENCODE_CONFIG_DIR="$dir"
-exec opencode "$@"
+
+def _fail(msg: str, code: int = 1, hint: str | None = None) -> NoReturn:
+    typer.echo(msg, err=True)
+    if hint:
+        typer.echo(hint, err=True)
+    raise typer.Exit(code)
+
+
+def _show_usage_and_profiles() -> None:
+    typer.echo("Usage: oc -p <profile> [opencode args...]\n", err=True)
+    if not PROFILES_DIR.is_dir():
+        _fail(f"oc: profiles dir not found at {PROFILES_DIR}", 2)
+    rows: list[tuple[str, str]] = []
+    max_name = 0
+    for d in sorted(PROFILES_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        yml = d / "profile.yaml"
+        if not yml.is_file():
+            _fail(f"oc: profile '{d.name}' missing profile.yaml at {yml}")
+        data = _load_profile_yml(yml, d.name)
+        rows.append((d.name, data["description"]))
+        max_name = max(max_name, len(d.name))
+    if rows:
+        typer.echo("Available profiles:", err=True)
+        for name, desc in rows:
+            typer.echo(f"  {name.ljust(max_name)}  {desc}", err=True)
+
+
+def _load_profile(name: str) -> dict[str, Any]:
+    pdir = PROFILES_DIR / name
+    if not pdir.is_dir():
+        _fail(
+            f"oc: profile '{name}' not found at {pdir}",
+            hint="Run 'oc' with no args to list available profiles.",
+        )
+    yml = pdir / "profile.yaml"
+    if not yml.is_file():
+        _fail(f"oc: profile '{name}' missing profile.yaml at {yml}")
+    return _load_profile_yml(yml, name)
+
+
+def _load_profile_yml(yml: Path, profile: str) -> dict[str, Any]:
+    try:
+        data = yaml.safe_load(yml.read_text()) or {}
+    except yaml.YAMLError as e:
+        _fail(f"oc: profile '{profile}' has invalid YAML in {yml}: {e}")
+    if not isinstance(data, dict):
+        _fail(f"oc: profile '{profile}' top-level must be a mapping in {yml}")
+    desc = data.get("description")
+    if desc is None:
+        _fail(f"oc: profile '{profile}' missing 'description' in {yml.name}")
+    if not isinstance(desc, str):
+        _fail(f"oc: profile '{profile}' 'description' must be a string in {yml.name}")
+    return data
+
+
+def _build_env(data: dict[str, Any], profile: str) -> dict[str, str]:
+    env = dict(os.environ)
+    for key, val in (data.get("environment") or {}).items():
+        env[key] = _resolve_env_value(val, profile, key)
+    env["OPENCODE_CONFIG_DIR"] = str(PROFILES_DIR / profile)
+    return env
+
+
+def _resolve_env_value(val: Any, profile: str, key: str) -> str:
+    if isinstance(val, dict):
+        return _read_file_ref(val, profile, key)
+    if isinstance(val, (list, tuple)):
+        _fail(
+            f"oc: profile '{profile}' env '{key}': "
+            f"value must be scalar or {{file: ...}}, got {val!r}"
+        )
+    return str(val)
+
+
+def _read_file_ref(val: dict[Any, Any], profile: str, key: str) -> str:
+    if set(val) != {"file"}:
+        _fail(
+            f"oc: profile '{profile}' env '{key}': "
+            f"file-ref must be {{file: <path>}}, got {val}"
+        )
+    raw = val["file"]
+    if not isinstance(raw, str):
+        _fail(
+            f"oc: profile '{profile}' env '{key}': "
+            f"file path must be a string, got {raw!r}"
+        )
+    path = os.path.expandvars(os.path.expanduser(raw))
+    try:
+        return Path(path).read_text().strip()
+    except OSError as e:
+        _fail(f"oc: profile '{profile}' env '{key}': cannot read {path}: {e}")
+
+
+def _exec_opencode(args: list[str], env: dict[str, str]) -> None:
+    try:
+        os.execvpe("opencode", ["opencode", *args], env)
+    except FileNotFoundError:
+        _fail("oc: 'opencode' not found on PATH", 127)
+
+
+if __name__ == "__main__":
+    app()

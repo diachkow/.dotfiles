@@ -29,8 +29,8 @@ home/.config/opencode/
 ├── plugins/                # global plugins (inherited by every profile)
 └── profiles/
     ├── <name>/
+    │   ├── profile.yaml    # required: description + optional env vars for `oc`
     │   ├── opencode.jsonc  # optional: profile-specific overrides
-    │   ├── .description    # optional: one-line description for `oc` usage
     │   ├── agents/         # optional: profile-specific agents
     │   ├── skills/         # optional: profile-specific skills
     │   └── plugins/        # optional: profile-specific plugins
@@ -50,26 +50,73 @@ oc -p <profile> [opencode args...]
 ```
 
 - No args / missing `-p` → prints usage plus the list of available profiles
-  (reading each profile's `.description` first line).
+  (reading each profile's `profile.yaml` `description` field).
 - Unknown profile → error with a hint to run `oc` for the list.
 
 Example: `oc -p tutor` launches the TUI with the `tutor` profile active.
 Example: `oc -p tutor run "explain monads"` forwards the `run` subcommand.
 
-## The `.description` convention
+`oc` is a Python script launched via a `uv run --script` shebang with PEP 723
+inline dependencies (`typer`, `pyyaml`). First invocation may briefly fetch
+those packages into uv's ephemeral environment; subsequent runs are cached.
 
-A profile may contain a `.description` file whose first line is a short
-one-liner. `oc` reads it for the no-args profile list. The file is inert to
-opencode's config scanner (it only looks for `opencode.json(c)`, `agents/`,
-`skills/`, `plugins/`), so it never affects startup. Profiles without one
-just show an empty description column.
+## The `profile.yaml` convention
+
+Every profile **must** contain a `profile.yaml` file. Its schema:
+
+```yaml
+description: <string, mandatory>      # one-liner shown by `oc` listing
+environment:                           # optional mapping of env vars to set
+  LITERAL_NUM: 1                       # any scalar -> str()
+  LITERAL_STR: "1"
+  LITERAL_BOOL: true
+  FROM_FILE: {file: ~/.secrets/x.txt} # read file, .strip()'d
+  BLOCK_FORM:                          # block mapping equivalent of {file: ...}
+    file: ~/.secrets/x.txt
+```
+
+Rules:
+
+- `description` is mandatory and must be a string. `oc` errors out if missing.
+- `environment` is optional. When present, it's a mapping of `VAR: value`.
+- Each value is either:
+  1. a literal scalar (str/int/float/bool) — coerced to `str()` and exported, or
+  2. a mapping with exactly one key `file` whose value is a path — the file is
+     read, `.strip()`'d, and the result exported.
+- File-ref paths run through `os.path.expanduser` (`~` → home) and
+  `os.path.expandvars` (`$VAR` expansion) before reading.
+- A missing `profile.yaml` (or missing `description`) makes `oc` refuse to
+  launch or list that profile. There is no fallback to `.description`.
+
+`profile.yaml` is inert to opencode's own config scanner (it only looks for
+`opencode.json(c)`, `agents/`, `skills/`, `plugins/`), so it never affects
+opencode startup — it's consumed solely by `oc`.
+
+Worked example — the `tutor` profile enables the `websearch` tool:
+
+```yaml
+# profiles/tutor/profile.yaml
+description: Tutoring agent for learning new technologies and techniques
+environment:
+  OPENCODE_ENABLE_EXA: "1"
+```
+
+Worked example — reading an API key from a secrets file:
+
+```yaml
+# profiles/work/profile.yaml
+description: Corporate work-related projects
+environment:
+  OPENCODE_API_KEY: {file: ~/.secrets/opencode-work-key.txt}
+```
 
 ## Adding a new profile
 
 1. Create `home/.config/opencode/profiles/<name>/`.
-2. Optionally add `opencode.jsonc` with overrides (e.g. `default_agent`,
+2. Add `profile.yaml` with at least a `description` field (and optional
+   `environment` mapping — see "The `profile.yaml` convention" above).
+3. Optionally add `opencode.jsonc` with overrides (e.g. `default_agent`,
    `permission`, `agent.<builtin>.disable`, `enabled_providers`).
-3. Optionally add `.description` (one line).
 4. Optionally add `agents/`, `skills/`, `plugins/` subdirs for profile-specific
    resources.
 5. Run `./scripts/restow.sh` (only needed if a new top-level entry appears
