@@ -60,6 +60,11 @@ Example: `oc -p tutor run "explain monads"` forwards the `run` subcommand.
 inline dependencies (`typer`, `pyyaml`). First invocation may briefly fetch
 those packages into uv's ephemeral environment; subsequent runs are cached.
 
+`oc` exports `OPENCODE_PROFILE` to the opencode process, set to the selected
+profile's directory name (e.g. `tutor`). It's available to any tool that
+reads the environment. When launched outside `oc` (plain `opencode`), the
+var is unset.
+
 ## The `profile.yaml` convention
 
 Every profile **must** contain a `profile.yaml` file. Its schema:

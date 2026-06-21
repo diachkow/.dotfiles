@@ -99,6 +99,7 @@ def _build_env(data: dict[str, Any], profile: str) -> dict[str, str]:
     for key, val in (data.get("environment") or {}).items():
         env[key] = _resolve_env_value(val, profile, key)
     env["OPENCODE_CONFIG_DIR"] = str(PROFILES_DIR / profile)
+    env["OPENCODE_PROFILE"] = profile
     return env
 
 
