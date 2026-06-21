@@ -7,6 +7,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       "saghen/blink.cmp",
+      "b0o/SchemaStore.nvim",
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -79,7 +80,9 @@ return {
         "ruff",
         "typescript-language-server",
         "typos-lsp",
-        "taplo",
+        "tombi",
+        "json-lsp",
+        "yaml-language-server",
         "stylua",
         "isort",
         "oxlint",
@@ -159,8 +162,38 @@ return {
       })
       vim.lsp.enable("typos_lsp")
 
-      -- TOML LSP
-      vim.lsp.enable("taplo") -- Enable TOML LSP with no custom options
+      -- TOML LSP (tombi: actively-maintained successor to taplo)
+      vim.lsp.enable("tombi")
+
+      -- JSON LSP with SchemaStore catalog
+      -- Schemas must be set in before_init (not on_init) for vim.lsp.config() API
+      vim.lsp.config("jsonls", {
+        settings = {
+          json = {
+            validate = { enable = true },
+          },
+        },
+        before_init = function(_, config)
+          config.settings.json.schemas = require("schemastore").json.schemas()
+        end,
+      })
+      vim.lsp.enable("jsonls")
+
+      -- YAML LSP with SchemaStore catalog
+      -- Built-in schemaStore must be disabled when using SchemaStore.nvim
+      vim.lsp.config("yamlls", {
+        settings = {
+          redhat = { telemetry = { enabled = false } },
+          yaml = {
+            schemaStore = { enable = false, url = "" },
+            validate = true,
+          },
+        },
+        before_init = function(_, config)
+          config.settings.yaml.schemas = require("schemastore").yaml.schemas()
+        end,
+      })
+      vim.lsp.enable("yamlls")
     end,
   },
 }

@@ -79,6 +79,18 @@ return {
           if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
             return
           end
+          local skip = {
+            json = true,
+            jsonc = true,
+            yaml = true,
+            ["yaml.docker-compose"] = true,
+            ["yaml.gitlab"] = true,
+            ["yaml.helm-values"] = true,
+            toml = true,
+          }
+          if skip[vim.bo[bufnr].filetype] then
+            return
+          end
           return { timeout_ms = 800, lsp_format = "fallback" }
         end,
         notify_on_error = true,
