@@ -7,7 +7,16 @@
   },
   "permission": {
     "edit": "deny",
-    "bash": "ask",
+    "bash": {
+      "*": "ask",
+      "ls *": "allow",
+      "grep *": "allow",
+      "find *": "allow",
+      "rg *": "allow",
+      "git log *": "allow",
+      "git diff *": "allow",
+      "git status *": "allow"
+    },
     "websearch": "allow"
   }
 }
