@@ -96,6 +96,7 @@ def _load_profile_yml(yml: Path, profile: str) -> dict[str, Any]:
 
 def _build_env(data: dict[str, Any], profile: str) -> dict[str, str]:
     env = dict(os.environ)
+    env.pop("VIRTUAL_ENV", None)
     for key, val in (data.get("environment") or {}).items():
         env[key] = _resolve_env_value(val, profile, key)
     env["OPENCODE_CONFIG_DIR"] = str(PROFILES_DIR / profile)
