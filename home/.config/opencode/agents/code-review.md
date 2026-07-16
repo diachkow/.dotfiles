@@ -1,8 +1,6 @@
 ---
 description: Reviews code for bugs, security, performance, and maintainability
 mode: subagent
-temperature: 0.1
-steps: 6
 tools:
   write: false
   edit: false
