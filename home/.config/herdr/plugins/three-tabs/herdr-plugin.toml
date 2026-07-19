@@ -1,0 +1,19 @@
+id = "diachkow.workspace-layout"
+name = "Workspace Layout"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Create a workspace with nvim/test/vibe tabs"
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "new-workspace"
+title = "New workspace with nvim/test/vibe tabs"
+command = ["bash", "new-workspace.sh"]
+
+[[panes]]
+id = "pick-dir"
+title = "Pick directory"
+placement = "popup"
+width = "80%"
+height = 20
+command = ["bash", "pick-dir.sh"]
