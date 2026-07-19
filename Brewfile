@@ -16,6 +16,7 @@ brew "neovim"
 brew "tmux"
 brew "starship"
 brew "neofetch"
+brew "herdr"
 
 # Container/dev runtime
 brew "colima"
