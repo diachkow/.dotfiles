@@ -1,13 +1,13 @@
 ---
-name: async-subtasks
-description: A skill to spawn child Opencode sessions to effectively use them as async subagents. Only use it when explicitly prompted by user.
+name: agent-subtasks
+description: A skill to spawn child Opencode sessions to effectively use them as subtasks. Only use it when explicitly prompted by user.
 ---
 
-# Async Subtasks
+# Agent Subtasks
 
-The main idea of asynchronous subtasks is to spawn child Opencode sessions as a separate process and let them execute user-defined task. To create a new asynchronous subagent, you need the following input from the user, either given explicitly or inferred from the conversation history:
+The main idea of subtask is to spawn child Opencode session as a separate process and let it execute user-defined task. To create a new subtask, you need the following input from the user, either given explicitly or inferred from the conversation history:
 
-1. **Task** - what to execute in child sessions (subagents).
+1. **Task** - what to execute in child sessions (subtasks).
 2. **Opencode Profile Name** - the user have his own custom setup for running different per-profile configurations for opencode. The name of the current profile is available under `OPENCODE_PROFILE` environment variable. **Always** launch child sessions under the same profile as a parent one.
 3. **Model name** - which model to use for the child session. If not specified, use the same model as current (parent) session does.
 
