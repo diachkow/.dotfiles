@@ -13,6 +13,8 @@ The main idea of asynchronous subtasks is to spawn child Opencode sessions as a 
 
 Once the input is defined, for each subtask create a new `herdr` tab in the current workspace (use `herdr` skill to learn how to do that). Give each tab a short slug name, so they are easy to distinguish.
 
-You mush execute each child session via `oc -p <profile name> [... the rest of opencode CLI arguments ...]`. `oc` command is a custom wrapper to run opencode in profile context. Make sure to use `build` agent for child sessions, so they can invoke necessary commands themselves.
+You mush execute each child session via `oc -p <profile name> [... the rest of opencode CLI arguments ...]`. `oc` command is a custom wrapper to run opencode in profile context. Make sure to use `build` agent for child sessions, so they can invoke necessary commands themselves. Prefix opencode session name with `[subtask]` for better searchability.
 
-After launching subtasks, run a command in a current (parent) session to watch for the subtasks execution and poll for their completion status each 30 seconds. Wait until all of them have finished. Once that has happened, report back the execution results to the user.
+**Only when explicitly asked by the user to wait for the subtasks for finish**, run a simple one-time script in a current (parent) session to watch for the subtasks exeecution and poll for their completion status each 30 seconds. The script should end its execution when all child Opencode session have finished their work. Once that has happened, cleanup the `herdr` tabs and report back the execution results to the user.
+
+If you were not prompted to wait for the output, just let the session run in a sibling tab asynchronously until its done. No need to monitor its execution.
