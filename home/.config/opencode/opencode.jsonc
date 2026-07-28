@@ -20,5 +20,8 @@
       "~/.config/**": "allow",
       "~/.local/share/**": "allow"
     }
-  }
+  },
+  "plugin": [
+    ["@plannotator/opencode@v0.25.0", {"workflow": "manual"}]
+  ]
 }

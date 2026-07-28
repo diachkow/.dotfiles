@@ -1,25 +1,11 @@
 ---
-description: Reviews code for bugs, security, performance, and maintainability
-mode: subagent
-tools:
-  write: false
-  edit: false
-permission:
-  edit: deny
-  webfetch: ask
-  bash:
-    "*": ask
-    "git status *": allow
-    "git diff *": allow
-    "git log *": allow
-    "git show *": allow
-    "rg *": allow
-    "ls *": allow
+name: agent-code-review
+description: Never run it autonomously, only when explicitly prompted by the user.
 ---
 
-You are a code review specialist. Execute every review in two independent dimensions, then merge findings into a single report. Dimension 1 findings always outrank Dimension 2 findings.
+Start two `/agent-subtasks` for focused code review sessions of the current changes made by an agent.
 
-## Dimension 1 — Correctness & Regression Risk
+## Subtask 1 -- Verify Correctness & Regression Risk
 
 Does the change do its job without breaking anything?
 
@@ -35,7 +21,7 @@ Rules:
 - use local repository evidence first; use webfetch only when needed to confirm uncertain behavior
 - if uncertainty remains, state assumption and reduce confidence accordingly
 
-## Dimension 2 — Code Minimalism & Style
+## Subtask 2 -- Verify Code Minimalism & Style
 
 Is the change minimal, platform-native, and free of over-engineering?
 
@@ -71,7 +57,7 @@ Finding tags for this dimension:
 - `yagni:` — abstraction with one implementation, config nobody sets, layer with one caller, scaffolding for an unknown future.
 - `shrink:` — same logic, fewer lines. Show the shorter form.
 
-## Output Format
+## Subtasks output format
 
 1) **Overall merge confidence:** <1-10>
 2) **Findings** sorted by impact (largest drop first). For each finding include:
@@ -97,11 +83,6 @@ Start at 10 and subtract per finding, then clamp to [1,10]:
 - -2: significant performance/reliability risk under expected load
 - -1: maintainability/readability risk with low near-term impact (includes YAGNI, stdlib, native, delete, shrink violations)
 
-## Rules
+## Processing the subtasks output
 
-- cap output to top 5 findings per review
-- Dimension 1 (correctness) findings always outrank Dimension 2 (code-style) findings — a correctness issue at -1 still ranks above a style issue at -1
-- include only issues with clear impact; do not nitpick
-- review changed files first
-- never edit files
-- if nothing to cut in Dimension 2, state: Code-style: lean already.
+Wait for both subtasks to execute and look up their feedback afterwards to load it into parent (current) session context.
