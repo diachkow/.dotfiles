@@ -13,7 +13,6 @@ brew "curl"
 
 # Terminal/editor
 brew "neovim"
-brew "tmux"
 brew "starship"
 brew "neofetch"
 brew "herdr"
