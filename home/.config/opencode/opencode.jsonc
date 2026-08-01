@@ -22,6 +22,11 @@
     }
   },
   "plugin": [
-    ["@plannotator/opencode@v0.25.0", {"workflow": "manual"}]
-  ]
+    ["@plannotator/opencode@v0.25.1", {"workflow": "manual"}]
+  ],
+  "agent": {
+    "build": {
+      "textVerbosity": "low"
+    }
+  }
 }
