@@ -22,7 +22,7 @@
     }
   },
   "plugin": [
-    ["@plannotator/opencode@v0.25.1", {"workflow": "manual"}]
+    ["@plannotator/opencode@v0.27.1", {"workflow": "manual"}]
   ],
   "agent": {
     "build": {

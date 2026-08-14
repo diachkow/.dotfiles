@@ -53,6 +53,7 @@ Rules:
 - Always `--agent build` so the child can run tools/commands.
 - Prefix session title with `[subtask]` for searchability.
 - Example model flags: `--model openai/gpt-5.6-luna --variant xhigh`.
+- Part of your prompt to child subagent should be an instruction that they **SHOULD NOT** launch any subagents or subtasks of their own as they are already a subtask. Creating more deep, nested graph will lead to overuse of the tokens, so it is very important to comply with this rule!
 
 ### 4. Prompt contract
 
