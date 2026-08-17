@@ -23,10 +23,5 @@
   },
   "plugin": [
     ["@plannotator/opencode@v0.27.1", {"workflow": "manual"}]
-  ],
-  "agent": {
-    "build": {
-      "textVerbosity": "low"
-    }
-  }
+  ]
 }
