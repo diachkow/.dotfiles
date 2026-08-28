@@ -22,6 +22,6 @@
     }
   },
   "plugin": [
-    ["@plannotator/opencode@v0.27.1", {"workflow": "manual"}]
+    ["@plannotator/opencode@v0.27.8", {"workflow": "manual"}]
   ]
 }
