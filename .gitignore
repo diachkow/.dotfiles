@@ -8,3 +8,34 @@
 **/__pycache__/
 **/node_modules/
 .planning/
+
+# pi agent runtime/state (keep settings + customization resources tracked)
+# ref: https://github.com/dmmulroy/.dotfiles/blob/main/.gitignore
+home/.pi/agent/*
+home/.pi/todos/*
+home/.pi/.pi/todos/*
+.pi/todos/*
+
+# pi MCP adapter runtime/secrets
+home/.pi/agent/mcp-oauth/
+home/.pi/agent/mcp-cache.json
+home/.pi/agent/mcp-npx-cache.json
+home/.pi/agent/mcp-auth.json
+home/.local/share/pi/mcp-auth.json
+
+# pi extensions node_modules
+home/.pi/agent/extensions/**/node_modules/
+
+# pi tracked resources (whitelist)
+!home/.pi/agent/settings.json
+!home/.pi/agent/tsconfig.json
+!home/.pi/agent/package.json
+!home/.pi/agent/APPEND_SYSTEM.md
+!home/.pi/agent/themes/
+!home/.pi/agent/themes/**
+!home/.pi/agent/extensions/
+!home/.pi/agent/extensions/**
+!home/.pi/agent/skills/
+!home/.pi/agent/skills/**
+!home/.pi/agent/prompts/
+!home/.pi/agent/prompts/**
