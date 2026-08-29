@@ -6,12 +6,12 @@
 
 ## Key Paths
 - `home/.config/**` app configs (nvim, tmux, opencode, ghostty, starship).
-- `home/.local/bin/*` helper scripts (`uv-tools-install`, `uv-tools-export`, `uvx-upgrade`, `oc`).
+- `home/.local/bin/*` helper scripts (`oc`).
 - `home/.config/opencode/profiles/` opencode profiles (layered via `OPENCODE_CONFIG_DIR`); see `home/.config/opencode/profiles/README.md`.
 - `Brewfile` curated Homebrew bundle manifest (minimal/intended deps only).
 - `scripts/stow.sh`, `scripts/restow.sh`, `scripts/unstow.sh` for symlink lifecycle.
 - `scripts/install-external-tools.sh` installs `uv`, `opencode`, `bun`, `oh-my-zsh` via curl installers when missing.
-- `bootstrap.sh` applies `Brewfile` (when `brew` exists), installs external tools, runs stow, then installs uv tools from `uv-tools.txt` when `uv` exists.
+- `home/.config/mise/config.toml` global mise tool manifest (uv, bun, opencode, pnpm + npm/pypi CLI tools); `bootstrap.sh` applies `Brewfile` (when `brew` exists), clones oh-my-zsh when missing, runs stow, then runs `mise install` when `mise` exists.
 
 ## Agent Workflow
 1. Edit files under `home/` (or repo scripts) only.
@@ -24,7 +24,6 @@
 - `./scripts/stow.sh`
 - `./scripts/restow.sh`
 - `./scripts/unstow.sh`
-- `./scripts/install-external-tools.sh`
 - `HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file ./Brewfile --no-upgrade`
 - `HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --file ./Brewfile --no-upgrade`
 - If changing `home/.config/opencode/package.json`, run `bun install` in `home/.config/opencode`.
@@ -35,7 +34,8 @@
 
 ## Brewfile Policy
 - Keep `Brewfile` curated/minimal; avoid machine-wide dumps without review.
-- Homebrew itself and `opencode` are installed via external curl scripts, not via `Brewfile`.
+- Homebrew itself is installed via external curl script, not via `Brewfile`.
+- CLI dev tools (uv, bun, opencode, pnpm, etc.) are mise-managed via `home/.config/mise/config.toml`, not via `Brewfile`.
 
 ## Conventions
 - Bash: `#!/usr/bin/env bash` + `set -euo pipefail`, quote vars, compute script dir.

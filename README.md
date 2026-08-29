@@ -19,16 +19,16 @@ cd ~/.dotfiles
 
 ## Commands
 
-- `./bootstrap.sh` - apply `Brewfile`, install `uv`/`opencode`/`bun`/`oh-my-zsh` via curl, stow `home`, then install `uv` tools from `uv-tools.txt`
+- `./bootstrap.sh` - apply `Brewfile`, clone `oh-my-zsh` when missing, stow `home`, then run `mise install` for global tools
 - `./scripts/stow.sh` - stow `home`
 - `./scripts/restow.sh` - restow `home` after file moves/renames
 - `./scripts/unstow.sh` - remove symlinks managed by `home`
-- `./scripts/install-external-tools.sh` - install `uv`, `opencode`, `bun`, `oh-my-zsh` via curl installers if missing
 
 ## Brew bundle
 
 - `Brewfile` is intentionally minimal and curated.
-- Homebrew itself and `opencode` are installed via external curl scripts and are not managed by `Brewfile`.
+- Homebrew itself is installed via external curl script and is not managed by `Brewfile`.
+- CLI dev tools are mise-managed via `home/.config/mise/config.toml`, not via `Brewfile`.
 - Check/install from repo root:
 
 ```bash
@@ -42,9 +42,12 @@ Commands in `home/.local/bin/` are Stow-managed and symlinked to `~/.local/bin`.
 
 - `vibecode` - starts `opencode` with `~/.config/opencode/vibecode.jsonc` overrides
 
-- `uv-tools-install [manifest]` - install tools listed in `uv-tools.txt`
-- `uv-tools-export [manifest]` - export installed tools to `uv-tools.txt` using `~=` version specifiers
-- `uvx-upgrade [manifest]` - run `uv tool upgrade --all` then refresh `uv-tools.txt`
+## Global CLI tools
+
+Managed by mise via `home/.config/mise/config.toml` (stowed to `~/.config/mise/config.toml`).
+
+- `mise install` - install everything pinned in the manifest
+- `mise upgrade` - upgrade installed tools
 
 ## Current migration backups
 

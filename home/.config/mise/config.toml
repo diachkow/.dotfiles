@@ -1,0 +1,23 @@
+# Global mise tools manifest.
+# Install/upgrade everything with: mise install / mise upgrade
+# Project-level .mise.toml files layer on top of this config.
+
+[settings.pipx]
+uvx = true # pipx backend uses uv tool under the hood
+
+[tools]
+# Base toolchain
+uv = "0.12.5"
+bun = "1.3.14"
+opencode = "1.18.21" # aqua:anomalyco/opencode
+
+# Node package manager + npm global CLI tools
+pnpm = "11.9.0"
+"npm:langfuse-cli" = "1.2.0"
+
+# pypi CLI tools (installed via uv tool)
+"pipx:cookiecutter" = "2.6.0"
+"pipx:dunk" = "0.5.0b0"
+"pipx:posting" = "2.9.2"
+"pipx:ty" = "0.0.73"
+"pipx:yamllint" = "1.38.0"

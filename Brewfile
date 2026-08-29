@@ -14,7 +14,7 @@ brew "curl"
 # Terminal/editor
 brew "neovim"
 brew "starship"
-brew "neofetch"
+brew "fastfetch"
 brew "herdr"
 
 # Container/dev runtime
@@ -24,6 +24,7 @@ brew "docker-buildx"
 brew "docker-compose"
 
 # Dev tooling
+brew "mise"
 brew "go"
 brew "k6"
 brew "kubectx"

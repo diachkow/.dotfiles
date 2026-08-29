@@ -18,19 +18,19 @@ else
   printf "Brewfile not found at %s; skipping brew bundle\n" "$brewfile_path"
 fi
 
-"$repo_dir/scripts/install-external-tools.sh"
-export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.bun/bin:$PATH"
+if [[ -d "$HOME/.oh-my-zsh" ]]; then
+  printf "oh-my-zsh already installed\n"
+else
+  printf "Installing oh-my-zsh via git clone\n"
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
+fi
 
 "$repo_dir/scripts/stow.sh"
 
-if command -v uv >/dev/null 2>&1; then
-  if [[ -f "$repo_dir/uv-tools.txt" ]]; then
-    "$repo_dir/home/.local/bin/uv-tools-install" "$repo_dir/uv-tools.txt"
-  else
-    printf "uv-tools.txt not found at %s; skipping uv tool install\n" "$repo_dir/uv-tools.txt"
-  fi
+if command -v mise >/dev/null 2>&1; then
+  mise install
 else
-  printf "uv is not installed; skipping uv tool install\n"
+  printf "mise is not installed; skipping mise tool install\n"
 fi
 
 printf "Dotfiles bootstrap complete from %s\n" "$repo_dir"

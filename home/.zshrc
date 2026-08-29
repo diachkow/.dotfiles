@@ -210,10 +210,5 @@ export FZF_DEFAULT_OPTS='
 # Create session work if not exists
 alias t='tmux new-session -A -s work'
 
-# pnpm
-export PNPM_HOME="/Users/vitaliy/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
-esac
-# pnpm end
+# Initialize mise for tool shims and automatic version switching
+eval_if_cmd mise activate zsh
