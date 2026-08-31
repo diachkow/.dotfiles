@@ -1,4 +1,7 @@
 {
   "lastChangelogVersion": "0.84.4",
-  "theme": "dark"
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "glm-5.3-flash",
+  "hideThinkingBlock": false
 }
