@@ -210,5 +210,8 @@ export FZF_DEFAULT_OPTS='
 # Create session work if not exists
 alias t='tmux new-session -A -s work'
 
-# Initialize mise for tool shims and automatic version switching
-eval_if_cmd mise activate zsh
+# Initialize mise via shims: stable executable paths (~/.local/share/mise/shims)
+# that resolve the installed version at exec time. Long-lived processes (e.g.
+# coding harnesses in tmux panes) keep working after `mise upgrade <tool>` —
+# no rehash/reshim/PATH refresh needed, since the shim path never changes.
+eval_if_cmd mise activate --shims zsh
