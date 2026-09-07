@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Commit & push the dotfiles-managed mise config after `mise upgrade --bump`.
+# Called automatically by the `mise()` wrapper function in ~/.zshrc.
+#
+# Usage: mise-upgrade-sync [upgrade args...]   (used for the commit message;
+#                                              flags are filtered out)
+
+# Locate the mise config; bail silently if absent (mise not managed here)
+config="$HOME/.config/mise/config.toml"
+[[ -f $config ]] || exit 0
+
+# Resolve the symlink chain to the real file (portable: no readlink -f)
+real_config="$config"
+while [[ -L $real_config ]]; do
+    target="$(readlink "$real_config")"
+    if [[ $target == /* ]]; then
+        real_config="$target"
+    else
+        real_config="$(dirname "$real_config")/$target"
+    fi
+done
+[[ -f $real_config ]] || exit 0
+
+# Find the managing repo from the real file's location
+repo="$(git -C "$(dirname "$real_config")" rev-parse --show-toplevel 2>/dev/null)" || exit 0
+
+# Nothing to do if the config is unchanged
+if git -C "$repo" diff --quiet -- "$real_config"; then
+    exit 0
+fi
+
+rel_path="${real_config#"$repo"/}"
+
+# Build commit subject from the upgrade args (drop flags/subcommand)
+tools=()
+for arg in "$@"; do
+    [[ $arg == upgrade || $arg == -* ]] && continue
+    tools+=("$arg")
+done
+subject="chore(mise): upgrade dependencies"
+
+# Commit ONLY the mise config, leaving any other working-tree changes alone
+git -C "$repo" add -- "$rel_path"
+git -C "$repo" commit --quiet -m "$subject" -- "$rel_path"
+
+# Best-effort push; never fail the upgrade because of connectivity
+if ! git -C "$repo" push --quiet 2>/dev/null; then
+    echo "mise-upgrade-sync: committed '$subject' but push failed (offline?)" >&2
+fi

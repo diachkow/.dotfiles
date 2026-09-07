@@ -215,3 +215,17 @@ alias t='tmux new-session -A -s work'
 # coding harnesses in tmux panes) keep working after `mise upgrade <tool>` —
 # no rehash/reshim/PATH refresh needed, since the shim path never changes.
 eval_if_cmd mise activate --shims zsh
+
+# Wrap `mise` to auto-commit & push the dotfiles-managed config after
+# `mise upgrade <tools> --bump` (see ~/.local/bin/mise-upgrade-sync).
+function mise() {
+  if [[ $1 == upgrade ]] && [[ "$*" == *--bump* ]]; then
+    command mise "$@"
+    local status=$?
+    if (( status == 0 )); then
+      mise-upgrade-sync "${@:2}"
+    fi
+    return $status
+  fi
+  command mise "$@"
+}
