@@ -83,7 +83,9 @@ return {
         "tombi",
         "json-lsp",
         "yaml-language-server",
+        "gopls",
         "stylua",
+        "gofumpt",
         "isort",
         "oxlint",
         "oxfmt",
@@ -117,6 +119,10 @@ return {
         },
       })
       vim.lsp.enable("ruff")
+
+      -- Go LSP setup
+      vim.lsp.config("gopls", {})
+      vim.lsp.enable("gopls")
 
       -- Lua LSP setup
       vim.lsp.config("lua_ls", {

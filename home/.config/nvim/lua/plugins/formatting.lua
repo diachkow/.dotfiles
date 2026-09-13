@@ -39,7 +39,7 @@ return {
       conform.setup({
         formatters_by_ft = {
           lua = { "stylua" },
-          go = { "gofmt" },
+          go = { "gofumpt" },
           javascript = js_formatters,
           typescript = js_formatters,
           javascriptreact = js_formatters,
