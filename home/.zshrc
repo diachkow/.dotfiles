@@ -196,6 +196,9 @@ export DOCKER_HOST="unix://${HOME}/.colima/docker.sock"
 # Set default editor
 export EDITOR="nvim"
 
+# Pi web tools (websearch via Exa's public MCP endpoint)
+export PI_WEB_TOOLS_EXA_ENDPOINT="https://mcp.exa.ai/mcp"
+
 # Catppuccin Mocha color scheme
 export FZF_DEFAULT_OPTS='
   --color fg:#cdd6f4,bg:#1e1e2e

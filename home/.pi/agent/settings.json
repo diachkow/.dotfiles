@@ -5,6 +5,7 @@
   "defaultModel": "glm-5.3-flash",
   "hideThinkingBlock": false,
   "packages": [
-    "npm:@plannotator/pi-extension"
+    "npm:@plannotator/pi-extension",
+    "git:github.com/dmmulroy/pi-web-tools"
   ]
 }
