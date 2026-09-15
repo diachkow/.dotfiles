@@ -15,6 +15,10 @@ return {
           filetypes = { "python" },
           linters = does_command_exist("mypy") and { "mypy" } or {},
         },
+        {
+          filetypes = { "go" },
+          linters = does_command_exist("golangci-lint") and { "golangci-lint" } or {},
+        },
         -- TODO: figure out JS linters
         -- {
         --   filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },

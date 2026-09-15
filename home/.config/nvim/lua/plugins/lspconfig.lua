@@ -84,6 +84,7 @@ return {
         "json-lsp",
         "yaml-language-server",
         "gopls",
+        "golangci-lint",
         "stylua",
         "gofumpt",
         "isort",
