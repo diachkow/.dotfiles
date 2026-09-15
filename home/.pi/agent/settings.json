@@ -6,6 +6,7 @@
   "hideThinkingBlock": false,
   "packages": [
     "npm:@plannotator/pi-extension",
-    "git:github.com/dmmulroy/pi-web-tools"
+    "git:github.com/dmmulroy/pi-web-tools",
+    "git:github.com/DietrichGebert/ponytail"
   ]
 }
