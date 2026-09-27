@@ -22,6 +22,7 @@
     }
   },
   "plugin": [
-    ["@plannotator/opencode@v0.27.10", {"workflow": "manual"}]
+    ["@plannotator/opencode@v0.27.10", {"workflow": "manual"}],
+    "@dietrichgebert/ponytail@v4.10.0"
   ]
 }
