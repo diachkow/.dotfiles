@@ -12,18 +12,9 @@ return {
 
       local grouped_linters_configs = {
         {
-          filetypes = { "python" },
-          linters = does_command_exist("mypy") and { "mypy" } or {},
-        },
-        {
           filetypes = { "go" },
-          linters = does_command_exist("golangci-lint") and { "golangci-lint" } or {},
+          linters = does_command_exist("golangci-lint") and { "golangcilint" } or {},
         },
-        -- TODO: figure out JS linters
-        -- {
-        --   filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-        --   linters = { "eslint_d" },
-        -- },
       }
 
       lint.linters_by_ft = {}
@@ -47,7 +38,6 @@ return {
 
       -- Custom command to check which linters are configured for current buffer
       vim.api.nvim_create_user_command("LintInfo", function()
-        local lint = require("lint")
         local ft = vim.bo.filetype
         local linters = lint.linters_by_ft[ft] or {}
 
