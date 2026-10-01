@@ -7,19 +7,19 @@ uvx = true # pipx backend uses uv tool under the hood
 
 [tools]
 # Base toolchain
-uv = "0.12.19"
+uv = "0.12.20"
 bun = "1.4.2"
-opencode = "1.18.32" # aqua:anomalyco/opencode
+opencode = "1.18.33" # aqua:anomalyco/opencode
 pi = "0.87.1"        # aqua:earendil-works/pi coding agent
 
 # Node package manager + npm global CLI tools
-pnpm = "12.6.0"
+pnpm = "12.8.1"
 "npm:langfuse-cli" = "1.2.4"
 
 # pypi CLI tools (installed via uv tool)
 "pipx:cookiecutter" = "2.7.1"
 "pipx:dunk" = "0.5.0b0"
-"pipx:posting" = "2.10.0"
+"pipx:posting" = "2.11.0"
 "pipx:ty" = "0.0.84"
 "pipx:yamllint" = "1.38.0"
 golangci-lint = "latest"
