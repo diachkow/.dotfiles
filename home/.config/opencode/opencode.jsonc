@@ -1,6 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "plan",
+  "default_agent": "build",
+  "agent": {
+    "plan": {
+      "disable": true
+    }
+  },
   "share": "disabled",
   "autoupdate": false,
   "lsp": false,
