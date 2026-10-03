@@ -7,10 +7,10 @@ uvx = true # pipx backend uses uv tool under the hood
 
 [tools]
 # Base toolchain
-uv = "0.12.20"
+uv = "0.12.22"
 bun = "1.4.2"
-opencode = "1.18.33" # aqua:anomalyco/opencode
-pi = "0.87.1"        # aqua:earendil-works/pi coding agent
+opencode = "1.18.34" # aqua:anomalyco/opencode
+pi = "1.0.0"        # aqua:earendil-works/pi coding agent
 
 # Node package manager + npm global CLI tools
 pnpm = "12.8.1"
