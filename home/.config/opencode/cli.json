@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "plugins": ["./herdr-tui-session.js"],
+  "theme": {
+    "name": "catppuccin-mocha-local"
+  },
+  "scroll": {
+    "acceleration": true
+  },
+  "diffs": {
+    "wrap": "word",
+    "single": false,
+    "view": "unified"
+  },
+  "terminal": {
+    "title": true
+  },
+  "session": {
+    "sidebar": "hide",
+    "scrollbar": false,
+    "thinking": "hide"
+  },
+  "animations": true
+}

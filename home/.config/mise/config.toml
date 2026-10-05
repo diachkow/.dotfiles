@@ -9,7 +9,7 @@ uvx = true # pipx backend uses uv tool under the hood
 # Base toolchain
 uv = "0.12.22"
 bun = "1.4.2"
-opencode = "1.18.34" # aqua:anomalyco/opencode
+"npm:@opencode/cli" = { version = "2.0.22", allow_builds = ["@opencode/cli"] } # exposes `opencode` + `opencode2`; V1 was aqua:anomalyco/opencode
 pi = "1.0.0"        # aqua:earendil-works/pi coding agent
 "github:backnotprop/plannotator" = "0.27.25"
 "github:plannotator/plannotator-tui" = "0.9.4"

@@ -14,8 +14,7 @@ Spawn child Opencode sessions as separate processes (via Herdr tabs) to execute 
 Gather from the user or conversation history:
 
 1. **Task(s)** — what each child session must do.
-2. **Opencode profile** — always the parent profile (`OPENCODE_PROFILE`). Launch children with the same profile.
-3. **Model** — child model; default to the parent session's model if unspecified. Include `--variant` when a reasoning level is required (e.g. `xhigh`).
+2. **Model** — child model; default to the parent session's model if unspecified. Use `provider/model#variant` when a reasoning level is required (e.g. `openai/gpt-5.6-luna#xhigh`).
 
 ## Launch workflow (Herdr)
 
@@ -44,15 +43,15 @@ Independent subtasks → create and start tabs **concurrently**.
 ### 3. Start OpenCode in the root pane
 
 ```bash
-herdr pane run <pane-id> "oc -p <profile> run --agent build --model <model> --variant <reasoning-level> --title '[subtask] <title>' '<detailed-prompt>'"
+herdr pane run <pane-id> "opencode run --agent build --model <model> --title '[subtask] <title>' '<detailed-prompt>'"
 ```
 
 Rules:
 
-- Always `oc -p <profile>` (profile wrapper), never bare `opencode`.
+- Always the `opencode` Zsh wrapper (loads work secrets), never bare `opencode2` or `mise exec -- opencode2`.
 - Always `--agent build` so the child can run tools/commands.
 - Prefix session title with `[subtask]` for searchability.
-- Example model flags: `--model openai/gpt-5.6-luna --variant xhigh`.
+- Example model flag: `--model openai/gpt-5.6-luna#xhigh` (reasoning level goes in the `#variant` suffix, there is no `--variant` flag).
 - Part of your prompt to child subagent should be an instruction that they **SHOULD NOT** launch any subagents or subtasks of their own as they are already a subtask. Creating more deep, nested graph will lead to overuse of the tokens, so it is very important to comply with this rule!
 
 ### 4. Prompt contract

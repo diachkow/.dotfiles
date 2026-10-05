@@ -291,6 +291,7 @@ description = "review the agent's newest reply"
 
 # Background notification popup delivery
 agent_panel_sort = "spaces"
+status_indicators = "symbols"
 [ui.toast]
 # off = disable pop-up notifications
 # herdr = show in-app toasts
@@ -319,7 +320,8 @@ agent_panel_sort = "spaces"
 # [ui.sound.agents]
 # droid = "off"
 
-enabled = false
+enabled = true
+path = "sounds/glass.mp3"
 [session]
 # Resume supported AI-agent panes into their native conversation sessions after
 # a Herdr server restart. Requires official integrations that report session refs.

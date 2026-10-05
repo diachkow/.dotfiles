@@ -11,7 +11,6 @@ path=(
     /opt/homebrew/sbin
     "$HOME/.local/bin"
     "$HOME/.spicetify"
-    "$HOME/.opencode/bin"
     "$HOME/go/bin"
     "$BUN_INSTALL/bin"
     $path
@@ -231,4 +230,20 @@ function mise() {
     return $status
   fi
   command mise "$@"
+}
+
+# OpenCode V2 work launcher. Replaces `oc -p work` — V2 has no OPENCODE_CONFIG_DIR
+# profile layering. Loads secret-backed env, then launches the mise-managed V2 binary
+# (`opencode2`) so the wrapper itself can be called `opencode` without recursion.
+function opencode() {
+  local tok file
+  for tok in BACKSTAGE_API_TOKEN JIRA_API_TOKEN; do
+    file="$HOME/.secrets/$tok"
+    if [[ ! -r "$file" ]]; then
+      print -u2 "opencode: missing required token file: $file"
+      return 1
+    fi
+    export "$tok=$(<"$file")" # $(<...) trims trailing newlines; never sources the file
+  done
+  mise exec -- opencode2 "$@"
 }

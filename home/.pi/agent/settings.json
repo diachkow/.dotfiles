@@ -8,5 +8,6 @@
     "npm:@plannotator/pi-extension",
     "git:github.com/dmmulroy/pi-web-tools",
     "git:github.com/DietrichGebert/ponytail"
-  ]
+  ],
+  "deviceId": "e11f7b49-393c-476f-a94a-caaf08ff3891"
 }

@@ -1,33 +1,37 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "build",
-  "agent": {
+  "agents": {
     "plan": {
-      "disable": true
+      "disabled": true
     }
   },
   "share": "disabled",
-  "autoupdate": false,
-  "lsp": false,
-  "enabled_providers": ["opencode", "opencode-go"],
-  "permission": {
-    "edit": "allow",
-    "bash": {
-      "*": "allow",
-      "git commit *": "ask",
-      "git push *": "ask",
-      "docker compose config": "deny"
-    },
-    "external_directory": {
-      "~/coding/**": "allow",
-      "/var/folders/**": "allow",
-      "/tmp/**": "allow",
-      "~/.config/**": "allow",
-      "~/.local/share/**": "allow"
-    }
+  "update": "disable",
+  "experimental": {
+    "policies": [
+      { "action": "provider.use", "resource": "*", "effect": "deny" },
+      { "action": "provider.use", "resource": "openai", "effect": "allow" },
+      { "action": "provider.use", "resource": "github-copilot", "effect": "allow" }
+    ]
   },
-  "plugin": [
-    ["@plannotator/opencode@0.27.25", {"workflow": "manual"}],
-    "@dietrichgebert/ponytail@v4.10.0"
+  "permissions": [
+    { "action": "edit", "resource": "*", "effect": "allow" },
+    { "action": "shell", "resource": "*", "effect": "allow" },
+    { "action": "shell", "resource": "git commit *", "effect": "ask" },
+    { "action": "shell", "resource": "git push *", "effect": "ask" },
+    { "action": "shell", "resource": "docker compose config", "effect": "deny" },
+    { "action": "external_directory", "resource": "~/coding/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/var/folders/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "~/.config/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "~/.local/share/*", "effect": "allow" }
+  ],
+  "plugins": [
+    {
+      "package": "@plannotator/opencode@0.27.25",
+      "options": { "workflow": "manual" }
+    },
+    "@dietrichgebert/ponytail@4.12.0"
   ]
 }

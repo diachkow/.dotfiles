@@ -4,5 +4,11 @@
   "diff_style": "stacked",
   "scroll_acceleration": {
     "enabled": true
+  },
+  "attention": {
+    "enabled": true,
+    "notifications": true,
+    "sound": true,
+    "volume": 0.4
   }
 }
