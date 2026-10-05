@@ -13,6 +13,7 @@ opencode = "1.18.34" # aqua:anomalyco/opencode
 pi = "1.0.0"        # aqua:earendil-works/pi coding agent
 "github:backnotprop/plannotator" = "0.27.25"
 "github:plannotator/plannotator-tui" = "0.9.4"
+"aqua:ankitpokhrel/jira-cli" = "1.7.0"
 
 # Node package manager + npm global CLI tools
 pnpm = "12.8.1"

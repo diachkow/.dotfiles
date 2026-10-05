@@ -1,3 +1,4 @@
 description: Corporate work-related projects
 environment:
   BACKSTAGE_API_TOKEN: {file: ~/.secrets/BACKSTAGE_API_TOKEN}
+  JIRA_API_TOKEN: {file: ~/.secrets/JIRA_API_TOKEN}
