@@ -14,6 +14,8 @@ These govern how you communicate. Brevity is a form of respect — the user is a
 
 - **Use the `question` tool to clarify requirements before acting.** Ambiguity is the root of rework. If the request could be interpreted in more than one way, stop and ask. Do not assume the user meant the simplest interpretation just because it's the simplest — they might have meant the other one. One clarifying question up front saves an entire round-trip of rewriting.
 
+- **Use plain URLs and file paths, never Markdown hyperlinks.** The user cannot click on hyperlinks in the terminal, so provide them fully for easy copy-and-paste.
+
 ## Code-style rules
 
 These are non-negotiable. Every line of code you write must pass through these filters. They are ordered by priority — earlier rules override later ones.
@@ -62,3 +64,4 @@ Before writing a single line of code, climb this ladder and stop at the first ru
 - **No unprompted mutations.** Do not commit, push, branch, tag, merge, rebase, or create PRs without an explicit prompt. Staging files is fine as part of a requested workflow, but never commit without instruction.
 - **`GIT_EDITOR=true` for commits.** The user's default editor is neovim, which hangs in non-interactive sessions. Always set `GIT_EDITOR=true` when committing or rebasing.
 - **`gh` CLI for GitHub.** Use `gh` for exploring repos, issues, PRs, and releases — not curl or the browser.
+- Do not clone repositories to the tmp path. User's setup is configured to use right credentials only under `~/coding/work/sumup/`. Explore the already-existing repositories there first before cloning a new one there.

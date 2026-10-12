@@ -11,3 +11,5 @@ You can leave comments on Github on user's behalf via `gh` CLI tool. You must pr
 ```
 
 After that, paste the actual comment contents. Don't forget to fill in the `<model_name>` part.
+
+This is only relevant for comments or thread replies. It is unnecessary to leave the prefix for PR descriptions.
