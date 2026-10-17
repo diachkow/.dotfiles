@@ -1,0 +1,8 @@
+# sudoers rules for the `work` script (dotfiles/home/.local/bin/work)
+# Allows starting/stopping the FortiClient (7.4.8) system daemons without a
+# password, and ONLY those launchctl invocations - nothing else runs as root.
+#
+# Install once with:
+#   sudo cp home/.local/share/sudoers-work /etc/sudoers.d/work-fortinet && sudo chmod 0440 /etc/sudoers.d/work-fortinet
+
+vitaliy ALL=(root) NOPASSWD: /bin/launchctl enable system/com.fortinet.*, /bin/launchctl kickstart system/com.fortinet.*, /bin/launchctl bootout system/com.fortinet.*, /bin/launchctl disable system/com.fortinet.*

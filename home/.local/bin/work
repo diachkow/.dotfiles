@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# @raycast.schemaVersion 1
+# @raycast.title Work Day
+# @raycast.mode compact
+# @raycast.packageName Work
+# @raycast.icon 🔋
+# @raycast.argument1 { "type": "text", "placeholder": "start|stop|status", "optional": true }
+# @raycast.argument2 { "type": "text", "placeholder": "office|home", "optional": true }
+#
+# Workday switch with profiles.
+#   work start          -> auto: "office" on weekdays, "home" on weekends
+#   work start office   -> caffeinate + colima + 1Password
+#   work start home     -> caffeinate only
+#   work stop           -> stops everything, regardless of profile
+#   work status
+set -euo pipefail
+
+CAFFEINATE_PID="${HOME}/.cache/caffeinate.pid"
+UID_N="$(id -u)"
+
+caffeinate_running() {
+	[ -f "$CAFFEINATE_PID" ] && kill -0 "$(cat "$CAFFEINATE_PID")" 2>/dev/null
+}
+
+refresh_swiftbar() {
+	if pgrep -xq SwiftBar; then
+		open -g "swiftbar://refreshallplugins" 2>/dev/null || true
+	fi
+}
+
+start_caffeinate() {
+	if caffeinate_running; then
+		echo "caffeinate: already running"
+	else
+		mkdir -p "$(dirname "$CAFFEINATE_PID")"
+		nohup caffeinate -dis >/dev/null 2>&1 &
+		echo $! >"$CAFFEINATE_PID"
+		echo "caffeinate: started (display kept awake)"
+	fi
+}
+
+stop_caffeinate() {
+	if caffeinate_running; then
+		kill "$(cat "$CAFFEINATE_PID")" 2>/dev/null || true
+		rm -f "$CAFFEINATE_PID"
+		echo "caffeinate: stopped"
+	else
+		echo "caffeinate: not running"
+	fi
+}
+
+start_profile() {
+	local profile="$1"
+	start_caffeinate
+	if [ "$profile" = "office" ]; then
+		echo "colima: starting..."
+		colima start >/dev/null
+		echo "colima: running"
+		open -g -j -a "1Password" && echo "1Password: started hidden"
+	fi
+	echo "Work day started ☕️ ($profile)"
+}
+
+cmd_start() {
+	local profile="${1:-}"
+	if [ -z "$profile" ]; then
+		# auto: work on weekdays, home on weekends
+		case "$(date +%u)" in
+		6 | 7) profile="home" ;;
+		*) profile="office" ;;
+		esac
+	fi
+	case "$profile" in
+	office | home) start_profile "$profile" ;;
+	*) echo "unknown profile: $profile (use office|home)" >&2 && exit 1 ;;
+	esac
+}
+
+cmd_stop() {
+	stop_caffeinate
+	if colima list | grep -q "default.*Running"; then
+		echo "colima: stopping..."
+		colima stop >/dev/null
+		echo "colima: stopped"
+	else
+		echo "colima: not running"
+	fi
+	osascript -e 'tell application "1Password" to quit' 2>/dev/null && echo "1Password: quit" || echo "1Password: not running"
+	echo "Work day done 👋"
+}
+
+cmd_status() {
+	caffeinate_running && echo "caffeinate: running" || echo "caffeinate: off"
+	colima list | grep -q "default.*Running" && echo "colima: running" || echo "colima: off"
+	pgrep -xq "1Password" && echo "1Password: running" || echo "1Password: off"
+	pgrep -xq "fctservctl2" >/dev/null 2>&1 && echo "forticlient services: running" || echo "forticlient services: off"
+}
+
+case "${1:-status}" in
+start) cmd_start "${2:-}" ;;
+stop) cmd_stop ;;
+status) cmd_status ;;
+*)
+	echo "usage: work start [office|home] | stop | status" >&2
+	exit 1
+	;;
+esac
+refresh_swiftbar
