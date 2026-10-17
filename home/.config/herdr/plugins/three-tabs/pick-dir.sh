@@ -7,7 +7,7 @@ if ! command -v fd >/dev/null 2>&1; then
 fi
 
 PROJECT_DIRS=("$HOME/coding" "$HOME/.config")
-FAVORITES_FILE="$HOME/.config/tmux/switch-project-favorites"
+FAVORITES_FILE="$HOME/.config/herdr/switch-project-favorites"
 PICK_FILE="${PICK_FILE:-}"
 
 FD_EXCLUDE=(
