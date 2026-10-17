@@ -5,18 +5,16 @@
 - `home/` mirrors `$HOME`; stow links these files into the live environment.
 
 ## Key Paths
-- `home/.config/**` app configs (nvim, tmux, opencode, ghostty, starship).
+- `home/.config/**` app configs (nvim, opencode, herdr, ghostty, starship).
 - `home/.local/bin/*` helper scripts (`mise-upgrade-sync`).
 - `Brewfile` curated Homebrew bundle manifest (minimal/intended deps only).
 - `scripts/stow.sh`, `scripts/restow.sh`, `scripts/unstow.sh` for symlink lifecycle.
-- `scripts/install-external-tools.sh` installs `uv`, `opencode`, `bun`, `oh-my-zsh` via curl installers when missing.
-- `home/.config/mise/config.toml` global mise tool manifest (uv, bun, opencode, pnpm + npm/pypi CLI tools); `bootstrap.sh` applies `Brewfile` (when `brew` exists), clones oh-my-zsh when missing, runs stow, then runs `mise install` when `mise` exists.
+- `home/.config/mise/config.toml` global mise tool manifest (uv, bun, opencode, pnpm + npm/pypi CLI tools);`bootstrap.sh` applies `Brewfile` (when `brew` exists), clones oh-my-zsh when missing, runs stow, then runs `mise install` when `mise` exists.
 
 ## Agent Workflow
 1. Edit files under `home/` (or repo scripts) only.
 2. If files were moved/renamed, run `./scripts/restow.sh`.
 3. For normal apply, run `./scripts/stow.sh`.
-4. Avoid `home/.config/tmux/plugins` unless explicitly requested (ignored/vendor-like).
 
 ## Commands
 - `./bootstrap.sh`
