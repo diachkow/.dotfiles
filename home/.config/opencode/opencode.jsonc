@@ -8,6 +8,9 @@
   },
   "share": "disabled",
   "update": "disable",
+  "websearch": {
+    "provider": "exa"
+  },
   "experimental": {
     "policies": [
       { "action": "provider.use", "resource": "*", "effect": "deny" },
