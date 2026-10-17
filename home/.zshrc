@@ -110,10 +110,10 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/vitaliy/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/vitaliy/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/vitaliy/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/vitaliy/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 # gitignore.io CLI tool integration
 function gi() {
     if (( $# == 0 )); then
@@ -164,9 +164,6 @@ eval_if_cmd ngrok completion
 # Set up fzf key bindings and fuzzy completion
 eval_if_cmd fzf --zsh
 
-# Initialize fnm with automatic version switching on directory changes
-eval_if_cmd fnm env --use-on-cd --shell zsh
-
 # Install zoxide (the 'z' command) instead of 'cd'
 eval_if_cmd zoxide init --cmd cd zsh
 
@@ -187,7 +184,7 @@ export DIARY_HOME=$HOME/Personal/diary
 alias diary='cd $DIARY_HOME && nvim $DIARY_HOME/$(date +%Y-%m-%d).md'
 
 # bun completions
-[ -s "/Users/vitaliy/.bun/_bun" ] && source "/Users/vitaliy/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Colima
 export DOCKER_HOST="unix://${HOME}/.colima/docker.sock"
@@ -209,12 +206,9 @@ export FZF_DEFAULT_OPTS='
   --border
   --height 13'
 
-# Create session work if not exists
-alias t='tmux new-session -A -s work'
-
 # Initialize mise via shims: stable executable paths (~/.local/share/mise/shims)
 # that resolve the installed version at exec time. Long-lived processes (e.g.
-# coding harnesses in tmux panes) keep working after `mise upgrade <tool>` —
+# coding harnesses in terminal panes) keep working after `mise upgrade <tool>` —
 # no rehash/reshim/PATH refresh needed, since the shim path never changes.
 eval_if_cmd mise activate --shims zsh
 
