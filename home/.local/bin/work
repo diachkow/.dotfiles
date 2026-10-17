@@ -9,14 +9,34 @@
 #
 # Workday switch with profiles.
 #   work start          -> auto: "office" on weekdays, "home" on weekends
-#   work start office   -> caffeinate + colima + 1Password
+#   work start office   -> caffeinate + colima + 1Password + FortiClient VPN up
 #   work start home     -> caffeinate only
-#   work stop           -> stops everything, regardless of profile
+#   work stop           -> VPN down + office extras stopped
+#   work status
+#
+# FortiClient: services stay resident; the VPN is toggled via the tray menu.
+#   work start home     -> caffeinate only
+#   work stop           -> VPN down + office extras stopped
 #   work status
 set -euo pipefail
 
 CAFFEINATE_PID="${HOME}/.cache/caffeinate.pid"
-UID_N="$(id -u)"
+FCT_TRAY_APP="/Applications/FortiClient.app/Contents/Resources/FortiTray/FortiTray.app"
+FCT_DAEMONS="
+com.fortinet.config
+com.fortinet.epctrl
+com.fortinet.forticlient.fctdnsd
+com.fortinet.fmon2
+com.fortinet.fssoagent_launchdaemon
+com.fortinet.forticlient.macos.PrivilegedHelper
+com.fortinet.sandbox
+com.fortinet.fctservctl2
+com.fortinet.fctctl
+com.fortinet.vpnctl
+com.fortinet.fctwf
+com.fortinet.fctwf2
+com.fortinet.ztnafw
+"
 
 caffeinate_running() {
 	[ -f "$CAFFEINATE_PID" ] && kill -0 "$(cat "$CAFFEINATE_PID")" 2>/dev/null
@@ -49,6 +69,95 @@ stop_caffeinate() {
 	fi
 }
 
+# hide without stealing focus; -j is often ignored by these apps
+hide_app() {
+	osascript -e "tell application \"System Events\" to set visible of process \"$1\" to false" >/dev/null 2>&1 || true
+}
+
+# Open the FortiTray menu and act: "off" = click Connect, "disconnect" = click
+# Disconnect, "none" = read state only (closes menu). Returns VPN state text.
+fct_menu() {
+	local action="$1"
+	osascript <<EOF 2>/dev/null || true
+tell application "System Events"
+	set prevApp to name of first application process whose frontmost is true
+	set res to "unknown"
+	tell process "FortiTray"
+		if not (exists menu bar item 1 of menu bar 1) then
+			set res to "off"
+		else
+			click menu bar item 1 of menu bar 1
+			delay 1
+			set m to menu 1 of menu bar item 1 of menu bar 1
+			if exists menu item "Disconnect SumUp" of m then
+				if "$action" is "disconnect" then
+					click menu item "Disconnect SumUp" of m
+					set res to "disconnecting"
+				else
+					key code 53
+					set res to "connected"
+				end if
+			else if exists menu item "Connect to SumUp" of m then
+				if "$action" is "off" then
+					click menu item "Connect to SumUp" of m
+					set res to "connecting"
+				else
+					key code 53
+					set res to "disconnected"
+				end if
+			else
+				key code 53
+				set res to "unknown"
+			end if
+		end if
+	end tell
+	# clicking the tray activates FortiTray - hand focus back
+	if exists application process prevApp then set frontmost of application process prevApp to true
+	return res
+end tell
+EOF
+}
+
+fct_start() {
+	if ! pgrep -xq FortiTray; then
+		open -g "$FCT_TRAY_APP" 2>/dev/null || true
+		local i
+		for i in {1..10}; do
+			pgrep -xq FortiTray 2>/dev/null && break
+			sleep 1
+		done
+	fi
+	case "$(fct_menu off)" in
+	connecting)
+		echo "FortiClient: VPN connecting - complete the auth prompt if it appears"
+		;;
+	connected)
+		echo "FortiClient: VPN already up"
+		;;
+	off | unknown)
+		echo "FortiClient: could not open the tray - connect manually"
+		;;
+	*)
+		echo "FortiClient: click Connect in the tray to bring the VPN up"
+		;;
+	esac
+}
+
+fct_stop() {
+	case "$(fct_menu disconnect)" in
+	disconnecting)
+		sleep 3
+		echo "FortiClient: VPN disconnected"
+		;;
+	off)
+		echo "FortiClient: tray not running - VPN not connected"
+		;;
+	*)
+		echo "FortiClient: VPN was not connected"
+		;;
+	esac
+}
+
 start_profile() {
 	local profile="$1"
 	start_caffeinate
@@ -56,7 +165,8 @@ start_profile() {
 		echo "colima: starting..."
 		colima start >/dev/null
 		echo "colima: running"
-		open -g -j -a "1Password" && echo "1Password: started hidden"
+		open -g -j -a "1Password" 2>/dev/null && hide_app 1Password && echo "1Password: started hidden"
+		fct_start
 	fi
 	echo "Work day started ☕️ ($profile)"
 }
@@ -76,6 +186,20 @@ cmd_start() {
 	esac
 }
 
+quit_app() {
+	local name="$1"
+	if ! pgrep -xq "$name"; then echo "$name: not running"; return; fi
+	sigterm_first=0
+	osascript -e 'tell application "'"$name"'" to quit' >/dev/null 2>&1 || sigterm_first=1
+	sleep 1
+	if pgrep -xq "$name" || [ "$sigterm_first" = 1 ]; then
+		pkill -x "$name" 2>/dev/null
+		echo "$name: stopped"
+	else
+		echo "$name: quit"
+	fi
+}
+
 cmd_stop() {
 	stop_caffeinate
 	if colima list | grep -q "default.*Running"; then
@@ -85,7 +209,9 @@ cmd_stop() {
 	else
 		echo "colima: not running"
 	fi
-	osascript -e 'tell application "1Password" to quit' 2>/dev/null && echo "1Password: quit" || echo "1Password: not running"
+	quit_app 1Password
+	fct_stop
+	quit_app FortiClient
 	echo "Work day done 👋"
 }
 
@@ -94,6 +220,7 @@ cmd_status() {
 	colima list | grep -q "default.*Running" && echo "colima: running" || echo "colima: off"
 	pgrep -xq "1Password" && echo "1Password: running" || echo "1Password: off"
 	pgrep -xq "fctservctl2" >/dev/null 2>&1 && echo "forticlient services: running" || echo "forticlient services: off"
+	echo "forticlient vpn: $(fct_menu none)"
 }
 
 case "${1:-status}" in
