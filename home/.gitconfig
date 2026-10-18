@@ -36,3 +36,10 @@
 
 [includeIf "gitdir:~/coding/work/lightit/"]
     path = ~/.gitconfig-lightit
+
+# Match by remote URL so agents cloning into tmp dirs get the right persona
+[includeIf "hasconfig:remote.*.url:git@github.com:sumup/**"]
+    path = ~/.gitconfig-sumup
+
+[includeIf "hasconfig:remote.*.url:git@gitlab.light-it.tools/**"]
+    path = ~/.gitconfig-lightit
