@@ -173,12 +173,19 @@ start_profile() {
 
 cmd_start() {
 	local profile="${1:-}"
+	# calendar statement + auto profile: work on weekdays, home on weekends
+	local day_word="workday" auto="office"
+	case "$(date +%u)" in
+	6 | 7)
+		day_word="weekend"
+		auto="home"
+		;;
+	esac
+	echo "Today is a $day_word ($(date +%A))"
 	if [ -z "$profile" ]; then
-		# auto: work on weekdays, home on weekends
-		case "$(date +%u)" in
-		6 | 7) profile="home" ;;
-		*) profile="office" ;;
-		esac
+		profile="$auto"
+	elif [ "$profile" != "$auto" ]; then
+		echo "(explicit profile override: $profile)"
 	fi
 	case "$profile" in
 	office | home) start_profile "$profile" ;;
