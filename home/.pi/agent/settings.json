@@ -3,7 +3,10 @@
   "theme": "catppuccin-mocha",
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.3-flash",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
+  "markdown": {
+    "codeBlockIndent": ""
+  },
   "packages": [
     "npm:@plannotator/pi-extension",
     "git:github.com/dmmulroy/pi-web-tools",
