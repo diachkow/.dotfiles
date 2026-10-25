@@ -241,3 +241,6 @@ function opencode() {
   done
   mise exec -- opencode2 "$@"
 }
+
+# Teach skill: learning workspace root
+export TEACH_LEARNINGS_DIR="$HOME/obsidian/Personal/research/learnings"

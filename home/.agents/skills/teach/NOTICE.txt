@@ -1,0 +1,12 @@
+teach skill — adapted from Matt Pocock's "teach" skill
+https://github.com/mattpocock/skills (skills/productivity/teach)
+
+MIT License
+Original license: https://github.com/mattpocock/skills/blob/main/LICENSE
+
+Notes:
+- SKILL.md is heavily adapted (pi-specific workspace resolution, review mode,
+  Socratic questioning, file:// output, quiz-position fix). Not a copy.
+- assets/*-template.md are condensed from upstream's MISSION-FORMAT.md,
+  RESOURCES-FORMAT.md and LEARNING-RECORD-FORMAT.md (rules moved into SKILL.md).
+- Upstream's GLOSSARY-FORMAT.md was intentionally dropped.
