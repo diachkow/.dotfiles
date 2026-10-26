@@ -30,6 +30,18 @@
     { "action": "external_directory", "resource": "~/.config/*", "effect": "allow" },
     { "action": "external_directory", "resource": "~/.local/share/*", "effect": "allow" }
   ],
+  "mcp": {
+    "servers": {
+      "notion": {
+        "type": "remote",
+        "url": "https://mcp.notion.com/mcp"
+      },
+      "honeycomb": {
+        "type": "remote",
+        "url": "https://mcp.eu1.honeycomb.io/mcp"
+      }
+    }
+  },
   "plugins": [
     {
       "package": "@plannotator/opencode@0.28.6",
