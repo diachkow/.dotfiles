@@ -9,20 +9,20 @@ uvx = true # pipx backend uses uv tool under the hood
 # Base toolchain
 uv = "0.13.6"
 bun = "1.4.4"
-"npm:@opencode/cli" = { version = "2.1.4", allow_builds = ["@opencode/cli"] } # exposes `opencode` + `opencode2`; V1 was aqua:anomalyco/opencode
+"npm:@opencode/cli" = { version = "2.2.3", allow_builds = ["@opencode/cli"] } # exposes `opencode` + `opencode2`; V1 was aqua:anomalyco/opencode
 pi = "1.4.0"        # aqua:earendil-works/pi coding agent
-"github:backnotprop/plannotator" = "0.28.32"
-"github:plannotator/plannotator-tui" = "0.9.4"
+"github:backnotprop/plannotator" = "0.28.38"
+"github:plannotator/plannotator-tui" = "0.9.9"
 "aqua:ankitpokhrel/jira-cli" = "1.7.0"
 
 # Node package manager + npm global CLI tools
-pnpm = "12.15.0"
+pnpm = "12.16.1"
 "npm:langfuse-cli" = "1.2.4"
 
 # pypi CLI tools (installed via uv tool)
 "pipx:cookiecutter" = "2.7.1"
 "pipx:dunk" = "0.5.0b0"
 "pipx:posting" = "2.11.1"
-"pipx:ty" = "0.0.92"
+"pipx:ty" = "0.0.95"
 "pipx:yamllint" = "1.38.0"
 golangci-lint = "2.15.0"
