@@ -3,7 +3,7 @@
 # Homebrew itself and opencode are installed via external curl scripts.
 
 # Relevant taps
-# No extra third-party taps are required for this curated set.
+tap "anomalyco/tap" # hex
 
 # Dotfiles/bootstrap
 brew "stow"
@@ -52,6 +52,7 @@ cask "legcord"
 cask "hyperkey"
 cask "stats"
 cask "swiftbar"
+cask "anomalyco/tap/hex"
 cask "openlogi"
 cask "font-geist-mono"
 cask "font-maple-mono-nf"
