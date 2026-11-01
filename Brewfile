@@ -48,11 +48,11 @@ brew "zsh-syntax-highlighting"
 
 # GUI apps
 cask "ghostty"
-cask "legcord"
 cask "hyperkey"
 cask "stats"
 cask "swiftbar"
 cask "anomalyco/tap/hex"
 cask "openlogi"
+cask "discord"
 cask "font-geist-mono"
 cask "font-maple-mono-nf"
