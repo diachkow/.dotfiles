@@ -11,7 +11,7 @@ uv = "0.13.6"
 bun = "1.4.4"
 "npm:@opencode/cli" = { version = "2.2.5", allow_builds = ["@opencode/cli"] } # exposes `opencode` + `opencode2`; V1 was aqua:anomalyco/opencode
 pi = "1.4.0"        # aqua:earendil-works/pi coding agent
-"github:backnotprop/plannotator" = "0.28.40"
+"github:backnotprop/plannotator" = "0.28.44"
 "github:plannotator/plannotator-tui" = "0.9.9"
 "aqua:ankitpokhrel/jira-cli" = "1.7.0"
 
