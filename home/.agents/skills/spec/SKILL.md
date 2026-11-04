@@ -7,7 +7,7 @@ description: Write an implementation plan (spec) to a file before touching code,
 
 A spec turns a discussion into an agreed change before any code moves. Its value is catching misunderstandings while they cost a paragraph instead of a diff. Specs are throwaway: they live in the worktree until the change ships, then get deleted.
 
-These are the user's preferences, not a procedure or a template. Shape each spec to the change in front of you: a one-file fix and a cross-service migration deserve very different documents. For shaping the design itself see the `module-design` skill, for what's worth testing see `test-quality`, and use the project's domain vocabulary (`domain-modeling`).
+These are the user's preferences, not a procedure or a template. Shape each spec to the change in front of you: a one-file fix and a cross-service migration deserve very different documents. For shaping the design itself see the `module-design` skill, for what's worth testing see `test-quality`.
 
 ## What the user values
 
