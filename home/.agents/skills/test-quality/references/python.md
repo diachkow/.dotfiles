@@ -1,10 +1,10 @@
 # Python test mechanics
 
-How to write the tests SKILL.md says are worth having. In an existing project, its conventions win — consistency inside a suite beats these defaults.
+This document shows how to write the tests that SKILL.md approves. In an existing project, the project conventions take precedence. Consistency inside a suite is more important than these defaults.
 
 ## Shape of a test
 
-Arrange–Act–Assert, separated by single blank lines, so the call under test is visible at a glance. Type-annotate tests and fixtures; stale fixtures then surface when signatures change.
+Use the Arrange–Act–Assert pattern. Separate the parts with one blank line each. Then a reader sees the call under test immediately. Add type annotations to tests and fixtures. When a signature changes, the type checker then reports each stale fixture.
 
 ```python
 def test_express_domestic_shipping_triples_base_rate() -> None:
@@ -16,11 +16,11 @@ def test_express_domestic_shipping_triples_base_rate() -> None:
     assert price == 15
 ```
 
-Money is `Decimal`, compared exactly. Genuine floats use `pytest.approx`; raw `==` breaks on harmless changes to operation order.
+Money is `Decimal`. Compare it exactly. For genuine floats, use `pytest.approx`. A raw `==` breaks after a harmless change to the operation order.
 
 ## Tables of cases
 
-One behavior with several inputs — especially a threshold — is one `parametrize`d test, with each case a `pytest.param(..., id=...)` so the id sits next to its values and failures read as facts. Properties (idempotence, round-trips) are plain asserts over such a table.
+One behavior with several inputs is one `parametrize`d test. This applies especially to a threshold. Give each case a `pytest.param(..., id=...)`. Then the id sits next to its values, and a failure reports the case by its id. Properties (idempotence, round-trips) are plain asserts over such a table.
 
 ```python
 @pytest.mark.parametrize(
@@ -36,13 +36,13 @@ def test_card_reference_longer_than_26_chars_is_rejected(reference: str, accepte
 
 ## Fixtures and isolation
 
-Fixtures are for setup that's reused or noisy; one-off values read better inline next to the assertion. Put shared fixtures in the nearest `conftest.py` covering all their users. Build test data through real constructors and validators — `model_construct()` or editing `__dict__` creates states production can't reach.
+Use fixtures for setup that several tests reuse, or that is noisy. Put one-off values inline, near the assertion. Put shared fixtures in the nearest `conftest.py` that covers all their users. Build test data through real constructors and validators. `model_construct()` or an edit of `__dict__` creates states that production code cannot reach.
 
-Default to function scope. Wider scopes suit expensive, read-only resources (a DB engine, a loaded model); a wider-scoped mutable object leaks state between tests and makes failures order-dependent.
+Use function scope by default. Use a wider scope only for expensive, read-only resources. Examples: a DB engine, a loaded model. A mutable object with a wider scope lets state leak between tests. The failures then depend on the test order.
 
-Each test should start from a known DB state: a transaction rolled back on teardown, or whatever cleanup the project already uses. Code under test that commits on its own or opens its own connection escapes a simple rollback.
+Each test must start from a known DB state. Use a transaction that rolls back on teardown, or the cleanup method that the project already uses. Code under test that commits by itself, or opens its own connection, is not covered by a simple rollback.
 
-Async resources are bound to an event loop. A session-scoped async engine needs a session-scoped loop, and tests using it must run on that same loop:
+Async resources are bound to an event loop. A session-scoped async engine needs a session-scoped loop. Tests that use that engine must run on that same loop:
 
 ```python
 @pytest_asyncio.fixture(scope="session", loop_scope="session")
@@ -53,11 +53,11 @@ async def engine() -> AsyncIterator[AsyncEngine]: ...
 async def test_inactive_users_are_excluded_from_count(db: AsyncSession) -> None: ...
 ```
 
-Filesystem: use `tmp_path` rather than mocking file calls.
+Filesystem: use `tmp_path`. Do not mock file operations.
 
 ## Errors
 
-Assert what callers branch on: `pytest.raises(SpecificError)`, or the status / error code of a response. Use `match=` or full-text comparison only when the message is part of a public contract.
+Assert what callers branch on. Use `pytest.raises(SpecificError)`, or the status or error code of a response. Use `match=` or a full-text comparison only when the message is part of a public contract.
 
 ```python
 with pytest.raises(InsufficientFundsError):
@@ -68,7 +68,7 @@ with pytest.raises(InsufficientFundsError):
 
 In order of preference:
 
-1. **Inject it.** A parameter for the clock, client, or RNG needs no patching, and the test reads as plain arguments:
+1. **Inject it.** A parameter for the clock, a client, or an RNG needs no patching. The test then reads as plain arguments:
 
    ```python
    def test_token_is_rejected_after_expiry() -> None:
@@ -79,9 +79,9 @@ In order of preference:
        assert valid is False
    ```
 
-   If injection isn't possible, use the time freezer the project already has (`time-machine`, `freezegun`) rather than a hand-rolled `datetime` subclass.
+   If injection is not possible, use the time freezer that the project already has (`time-machine`, `freezegun`). Do not write a custom `datetime` subclass.
 
-2. **Fake the transport, not your wrapper.** With `httpx`, an `httpx.MockTransport` lets your own request code (auth headers, retries, error mapping) run for real, and assertions land on what the external service receives. If the app builds its client in a factory (base URL, auth), pass the transport into that factory so its setup runs too. Use `respx` instead if the project already has it.
+2. **Fake the transport, not your wrapper.** With `httpx`, an `httpx.MockTransport` lets your own request code (auth headers, retries, error mapping) run for real. The assertions then land on what the external service receives. If the app builds its client in a factory (base URL, auth), pass the transport into that factory. Then the factory setup runs too. Use `respx` instead if the project already has it.
 
    ```python
    @pytest.mark.asyncio
@@ -99,7 +99,7 @@ In order of preference:
        assert [(r.method, r.url.path) for r in sent] == [("PUT", "/v1/cards/c-1/block")]
    ```
 
-3. **Patch, as a last resort**, with `mocker` — for third-party code you can't inject. Patch where the name is looked up, not where it's defined, and pass `autospec=True` so a changed signature fails loudly:
+3. **Patch as a last resort**, with `mocker`. Use it for third-party code that you cannot inject. Patch the name at the place where the code under test looks it up. Do not patch the place where the code defines it. Pass `autospec=True`. Then a changed signature produces a clear error:
 
    ```python
    mocker.patch.object(my_module.sdk, "send", autospec=True, return_value=receipt)
@@ -107,20 +107,20 @@ In order of preference:
 
 ## Framework seams
 
-- **FastAPI**: drive the app through `httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test")` and swap boundary dependencies with `app.dependency_overrides`. `ASGITransport` doesn't run lifespan events; start them explicitly if the app relies on them.
-- **PydanticAI**: set `models.ALLOW_MODEL_REQUESTS = False` in `conftest.py` so no test reaches a real LLM; use `agent.override(model=TestModel())`, or `FunctionModel` to script specific tool calls. Assert on tool effects and validated output, not prompt text.
-- **Django**: `pytest-django` with the `django_db` mark and the test client as the end-to-end seam; `django_assert_num_queries` pins N+1 query contracts.
+- **FastAPI**: drive the app through `httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test")`. Replace boundary dependencies with `app.dependency_overrides`. `ASGITransport` does not run lifespan events. Start them explicitly if the app relies on them.
+- **PydanticAI**: set `models.ALLOW_MODEL_REQUESTS = False` in `conftest.py`. Then no test reaches a real LLM. Use `agent.override(model=TestModel())`, or `FunctionModel` to script specific tool calls. Assert on tool effects and validated output. Do not assert on prompt text.
+- **Django**: use `pytest-django` with the `django_db` mark, and the test client as the end-to-end seam. `django_assert_num_queries` pins N+1 query contracts.
 
 ## Async
 
-Mark async tests with `@pytest.mark.asyncio` unless the project sets `asyncio_mode = "auto"` — in the default strict mode an unmarked async test doesn't run as intended. Async fixtures use `@pytest_asyncio.fixture`.
+Mark async tests with `@pytest.mark.asyncio`. Exception: the project sets `asyncio_mode = "auto"`. In the default strict mode, an unmarked async test does not run as intended. Async fixtures use `@pytest_asyncio.fixture`.
 
-## Setting up pytest in a new project
+## How to set up pytest in a new project
 
-Only when the project has no test setup yet; otherwise follow what exists.
+Do this only when the project has no test setup yet. Otherwise obey what exists.
 
-- `pytest`, plus `pytest-mock` and `pytest-asyncio` if needed. Run with `uv run pytest`.
-- Config in `pyproject.toml`, setting only what differs from pytest defaults and only keys for plugins actually installed — an unknown key is an error or warning, not a reason to add the plugin:
+- Use `pytest`, plus `pytest-mock` and `pytest-asyncio` if needed. Run the tests with `uv run pytest`.
+- Put the config in `pyproject.toml`. Set only what differs from the pytest defaults. Set only keys for installed plugins. An unknown key is an error or a warning. It is not a reason to add the plugin:
 
   ```toml
   [tool.pytest.ini_options]
@@ -129,11 +129,11 @@ Only when the project has no test setup yet; otherwise follow what exists.
   asyncio_default_fixture_loop_scope = "function"
   ```
 
-  `--strict-markers` turns a typo'd marker into an error instead of a silently ignored filter. `--import-mode=importlib` lets test files share a basename across directories without `__init__.py` files; the trade-off is that test modules can't import each other, so shared helpers live in `conftest.py`. With `uv` the project is installed, so `pythonpath` is unnecessary.
-- `tests/` mirrors the package so a module's tests are findable without searching:
+  `--strict-markers` turns a marker with a typo into an error. Without it, pytest silently ignores that filter. `--import-mode=importlib` lets test files share a basename across directories, without `__init__.py` files. The trade-off: test modules cannot import each other. Put shared helpers in `conftest.py`. With `uv`, the project is already importable, so `pythonpath` is unnecessary.
+- Let `tests/` mirror the package. Then a person can find the tests for a module without a search:
 
   ```
   my_project/nested/module.py   ->  tests/nested/test_module.py
   my_project/main.py            ->  tests/test_main.py
   ```
-- Test settings: env-loading plugins (`pytest-env`, `pytest-dotenv`) set only the variables they list — anything else inherited from the shell, including real credentials, still leaks in. Make settings that point at external systems fail closed in tests.
+- Test settings: env-loading plugins (`pytest-env`, `pytest-dotenv`) set only the variables that they list. Any other variable that the shell defines leaks into the test run. Real credentials are one example. Make settings that point at external systems fail closed in tests. Fail closed means: reject the operation when the external system is not available.
