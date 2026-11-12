@@ -44,9 +44,9 @@
   },
   "plugins": [
     {
-      "package": "@plannotator/opencode@0.28.6",
+      "package": "@plannotator/opencode@0.28.61",
       "options": { "workflow": "manual" }
     },
-    "@dietrichgebert/ponytail@4.12.0"
+    "@dietrichgebert/ponytail@5.3.3"
   ]
 }
