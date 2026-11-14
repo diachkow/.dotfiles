@@ -244,3 +244,10 @@ function opencode() {
 
 # Teach skill: learning workspace root
 export TEACH_LEARNINGS_DIR="$HOME/obsidian/Personal/research/learnings"
+
+# workspace [dir] [name]: open a new Rex session with three shell tabs in dir
+function workspace() {
+  local dir="${1:-$PWD}"
+  local name="${2:-${dir:t}}"
+  rex do "$HOME/.config/rex/new_workspace.lua" "dir=$dir" "name=$name"
+}

@@ -114,7 +114,7 @@
     }
   },
   "capture": {
-    "enabled": true,
+    "enabled": false,
     "hotkey": {
       "keys": [
         {
