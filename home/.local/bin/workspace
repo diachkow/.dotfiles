@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# workspace [dir] [name]: open a new Rex session with three shell tabs in dir
+# name is optional; defaults to the folder's name
+usage="usage: workspace [dir] [name]"
+
+dir="${1:-$PWD}"
+name="${2:-$(basename "$dir")}"
+
+if [[ ! -d "$dir" ]]; then
+  echo "not a directory: $dir" >&2
+  echo "$usage" >&2
+  exit 1
+fi
+
+exec rex do "$HOME/.config/rex/new_workspace.lua" "dir=$dir" "name=$name"
