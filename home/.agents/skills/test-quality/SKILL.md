@@ -59,6 +59,7 @@ These patterns are signals, not automatic verdicts. Do the two-edit check before
 - **Bypassing invariants**: the test builds domain objects around their parsers, validators, or constructors. The test then reaches states that production code cannot produce.
 - **Coverage filler**: examples are "get name returns name", "a dataclass stores its fields", or anything that a type checker already guarantees. This is the most common low-value output that a model generates.
 - **Wiring restatement**: the test mirrors the application flow step by step. Example: "service calls repository, repository calls mapper". The test mocks and asserts each step. It tests the diagram, not the system.
+- **Observability restatement**: do not mirror instrumentation field-by-field in tests — span names, attributes, metric labels, or log payloads. External visibility alone does not justify a test. Prefer functional outcomes such as timeout escalation and cancellation propagation. For a concrete monitoring regression, test only the consumer-visible condition that failed, not the surrounding telemetry schema.
 
 ## Expected values
 
