@@ -28,6 +28,7 @@ repo="$(git -C "$(dirname "$real_config")" rev-parse --show-toplevel 2>/dev/null
 
 # Nothing to do if the config is unchanged
 if git -C "$repo" diff --quiet -- "$real_config"; then
+    echo "mise-upgrade-sync: no changes to commit"
     exit 0
 fi
 
@@ -44,6 +45,7 @@ subject="chore(mise): upgrade dependencies"
 # Commit ONLY the mise config, leaving any other working-tree changes alone
 git -C "$repo" add -- "$rel_path"
 git -C "$repo" commit --quiet -m "$subject" -- "$rel_path"
+echo "mise-upgrade-sync: created commit '$subject'"
 
 # Best-effort push; never fail the upgrade because of connectivity
 if ! git -C "$repo" push --quiet 2>/dev/null; then
