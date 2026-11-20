@@ -87,3 +87,12 @@ rex.bind("resize/=", "pane.balance")
 
 -- double prefix sends ctrl+b to the running program (readline, less, ...)
 rex.bind("tmux/ctrl+b", "pane.send_key", { key = "ctrl+b" })
+
+-- keep agent-notify.lua running: start it once per machine; survives config reloads.
+-- the sh -c wrapper redirects output (a detached child dies on EPIPE without it),
+-- and uses the bundled CLI path because the server's PATH can't find `rex`
+if not rex.exec{ "pgrep", "-f", "rex do .*agent-notify" }.ok then
+  rex.exec.start({ "sh", "-c",
+    'exec "$HOME/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex" do "$HOME/.config/rex/agent-notify.lua" --all > /tmp/rex-agent-notify.log 2>&1' },
+    { detach = true })
+end
