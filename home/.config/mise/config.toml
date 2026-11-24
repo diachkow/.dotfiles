@@ -11,17 +11,17 @@ uv = "0.13.9"
 bun = "1.4.5"
 "npm:@opencode/cli" = { version = "2.3.2", allow_builds = ["@opencode/cli"] } # exposes `opencode` + `opencode2`; V1 was aqua:anomalyco/opencode
 pi = "1.6.0"        # aqua:earendil-works/pi coding agent
-"github:backnotprop/plannotator" = "0.29.1"
+"github:backnotprop/plannotator" = "0.29.2"
 "github:plannotator/plannotator-tui" = "0.10.0"
 "aqua:ankitpokhrel/jira-cli" = "1.7.0"
 
 # Node package manager + npm global CLI tools
-pnpm = "12.21.0"
+pnpm = "12.23.0"
 "npm:langfuse-cli" = "1.4.0"
 
 # pypi CLI tools (installed via uv tool)
 "pipx:cookiecutter" = "2.7.1"
 "pipx:posting" = "2.11.1"
-"pipx:ty" = "0.0.107"
+"pipx:ty" = "0.0.108"
 "pipx:yamllint" = "1.38.0"
 golangci-lint = "2.15.0"
