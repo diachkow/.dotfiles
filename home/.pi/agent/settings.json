@@ -1,11 +1,8 @@
 {
-  "lastChangelogVersion": "1.6.0",
+  "lastChangelogVersion": "1.6.1",
   "theme": "catppuccin-mocha",
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.3-flash",
-  "enabledModels": [
-    "opencode-go/*"
-  ],
   "hideThinkingBlock": true,
   "editorPaddingX": 1,
   "markdown": {
@@ -15,10 +12,11 @@
     "npm:@plannotator/pi-extension",
     "git:github.com/dmmulroy/pi-web-tools",
     "git:github.com/DietrichGebert/ponytail",
-    "npm:@tintinweb/pi-subagents"
+    "npm:@tintinweb/pi-subagents",
+    "npm:pi-claude-bridge"
   ],
   "deviceId": "e11f7b49-393c-476f-a94a-caaf08ff3891",
   "extensionChangelogVersions": {
-    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.2"
+    "{\"source\":\"npm:@tintinweb/pi-subagents\",\"scope\":\"user\"}": "0.26.3"
   }
 }
